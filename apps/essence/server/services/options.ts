@@ -6,96 +6,16 @@ const options: Options = {
       locale: 'ru',
       value: 'Вкус на бегу',
     },
-    {
-      locale: 'el',
-      value: 'Γεύση εν κινήσει',
-    },
-    {
-      locale: 'en',
-      value: 'Taste on the run',
-    },
-    {
-      locale: 'es',
-      value: 'Sabor sobre la marcha',
-    },
-    {
-      locale: 'fr',
-      value: 'Savoureux sur le pouce',
-    },
-    {
-      locale: 'hi',
-      value: 'दौड़ते हुए स्वाद',
-    },
-    {
-      locale: 'it',
-      value: 'Gusto in movimento',
-    },
-    {
-      locale: 'ka',
-      value: 'გასინჯვა სირბილის დროს',
-    },
-    {
-      locale: 'de',
-      value: 'Geschmack für unterwegs',
-    },
-    {
-      locale: 'zh_cn',
-      value: '随时随地品尝美味',
-    },
-    {
-      locale: 'pt',
-      value: 'Sabor em movimento',
-    },
   ],
   selectorDescription: [
     {
       locale: 'ru',
       value: 'Насладитесь уникальными вкусами и приятной атмосферой',
     },
-    {
-      locale: 'el',
-      value: 'Απολαύστε μοναδικές γεύσεις και μια ευχάριστη ατμόσφαιρα',
-    },
-    {
-      locale: 'en',
-      value: 'Enjoy unique tastes and a pleasant atmosphere',
-    },
-    {
-      locale: 'es',
-      value: 'Disfrute de sabores únicos y un ambiente agradable',
-    },
-    {
-      locale: 'fr',
-      value: 'Savourez des goûts uniques et une ambiance agréable',
-    },
-    {
-      locale: 'hi',
-      value: 'अनोखे स्वाद और अच्छे माहौल का आनंद लें',
-    },
-    {
-      locale: 'it',
-      value: 'Goditi sapori unici e un’atmosfera piacevole',
-    },
-    {
-      locale: 'ka',
-      value: 'დატკბით უნიკალური გემოებით და სასიამოვნო გარემოთი',
-    },
-    {
-      locale: 'de',
-      value: 'Genießen Sie einzigartige Geschmackserlebnisse und eine angenehme Atmosphäre',
-    },
-    {
-      locale: 'zh_cn',
-      value: '享受独特的口味和愉悦的氛围',
-    },
-    {
-      locale: 'pt',
-      value: 'Desfrute de sabores únicos e uma atmosfera agradável',
-    },
   ],
   logoUrl: 'https://storage.yandexcloud.net/next-orders-food-demo/nextorders-food-logo.jpg',
   defaultLocale: 'ru',
-  availableLocales: ['ru', 'el', 'en', 'es', 'fr', 'hi', 'it', 'ka', 'de', 'zh_cn', 'pt'],
+  availableLocales: ['ru'],
   countryCode: 'RU',
   currencyCode: 'RUB',
   headLinks: [
