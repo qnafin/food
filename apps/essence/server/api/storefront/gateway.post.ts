@@ -1,5 +1,5 @@
 import type { GatewayAddOrderItemRequest, GatewayCompleteOrderRequest, GatewayDecrementOrderItemQuantityRequest, GatewayGetDeliveryByCourierStatusRequest, GatewayGetOrderRequest, GatewayGetSelfPickupStatusRequest, GatewayGetTimeSlotsRequest, GatewayIncrementOrderItemQuantityRequest, GatewayRequest, GatewayUpdateOrderRequest } from '@nextorders/food-schema'
-import { handleGetChannels, handleGetDeliveryByCourierStatus, handleGetSelfPickupStatus, handleGetTimeSlots } from '~/server/services/channel'
+import { handleGetChannels, handleGetDeliveryByCourierStatus, handleGetSelfPickupStatus, handleGetTimeSlots } from '~/server/services/channel/index'
 import { handleGetMenu } from '~/server/services/menu'
 import { handleGetOptions } from '~/server/services/options'
 import { handleAddOrderItem, handleChangeOrderItemQuantity, handleCompleteOrder, handleCreateOrder, handleGetOrder, handleUpdateOrder } from '~/server/services/order'

@@ -1,7 +1,7 @@
 import { useLogger } from '@nextorders/core/server/utils/logger'
 import { drizzle } from 'drizzle-orm/libsql'
 import { categories, menus } from '../schema'
-// /Users/qnafin/projects/food/apps/essence/server/db/seed/menu.ts
+
 import 'dotenv/config'
 
 const logger = useLogger('seed-menu')
