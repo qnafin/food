@@ -153,36 +153,52 @@ export function handleCompleteOrder(data: GatewayCompleteOrderRequest['body']): 
     result: completedOrder,
   }
 }
+// /Users/qnafin/projects/food/apps/essence/server/services/order.ts
 
-export function handleAddOrderItem({ orderId, variantId }: GatewayAddOrderItemRequest['body']): GatewayAddOrderItemResponse {
-  const menu = handleGetMenu().result
+export async function handleAddOrderItem({ orderId, variantId }: GatewayAddOrderItemRequest['body']): Promise<GatewayAddOrderItemResponse> {
+  // Получаем меню асинхронно
+  const menuResponse = await handleGetMenu()
+  const menu = menuResponse.result
 
-  const category = menu.categories.find((category) => category.products.find((product) => product.variants.find((variant) => variant.id === variantId)))
-  if (!category) {
-    throw new Error('Category not found')
+  if (!menu) {
+    throw new Error('Menu not found')
   }
 
-  const product = menu.categories.flatMap((category) => category.products).find((product) => product.variants.find((variant) => variant.id === variantId))
-  if (!product) {
-    throw new Error('Product not found')
+  // Ищем категорию, продукт и вариант
+  let foundCategory = null
+  let foundProduct = null
+  let foundVariant = null
+
+  for (const category of menu.categories) {
+    for (const product of category.products) {
+      const variant = product.variants.find((v) => v.id === variantId)
+      if (variant) {
+        foundCategory = category
+        foundProduct = product
+        foundVariant = variant
+        break
+      }
+    }
+    if (foundVariant) {
+      break
+    }
   }
 
-  const variant = product.variants.find((variant) => variant.id === variantId)
-  if (!variant) {
-    throw new Error('Variant not found')
+  if (!foundCategory || !foundProduct || !foundVariant) {
+    throw new Error('Product variant not found')
   }
 
   const newItem: OrderItem = {
     variantId,
     orderId,
     id: createId(),
-    categoryId: category.id,
-    categorySlug: category.slug,
-    productId: product.id,
-    productSlug: product.slug,
+    categoryId: foundCategory.id,
+    categorySlug: foundCategory.slug,
+    productId: foundProduct.id,
+    productSlug: foundProduct.slug,
     quantity: 1,
-    unitPrice: variant.price,
-    totalPrice: variant.price,
+    unitPrice: foundVariant.price,
+    totalPrice: foundVariant.price,
   }
 
   const order = findOrder(orderId)

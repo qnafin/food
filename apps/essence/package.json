@@ -10,15 +10,27 @@
     "clean": "rm -rf .nuxt .output",
     "clean:modules": "rm -rf .nuxt .output node_modules",
     "typecheck": "nuxt typecheck",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx server/db/migrate.ts",
+    "db:studio": "drizzle-kit studio",
+    "db:push": "drizzle-kit push",
+    "db:seed": "tsx server/db/seed.ts"
   },
   "dependencies": {
     "@date-fns/tz": "catalog:integrations",
+    "@libsql/client": "catalog:database",
     "@nextorders/food-schema": "workspace:*",
-    "@paralleldrive/cuid2": "catalog:integrations"
+    "@paralleldrive/cuid2": "catalog:integrations",
+    "better-sqlite3": "catalog:database",
+    "dotenv": "catalog:database",
+    "drizzle-orm": "catalog:database"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "catalog:database",
     "@types/node": "catalog:types",
-    "nuxt": "catalog:dev"
+    "drizzle-kit": "catalog:database",
+    "nuxt": "catalog:dev",
+    "tsx": "catalog:database"
   }
 }

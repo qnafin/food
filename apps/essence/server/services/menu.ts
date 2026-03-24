@@ -1,4 +1,10 @@
-import type { GatewayGetMenuResponse, Menu } from '@nextorders/food-schema'
+// /Users/qnafin/projects/food/apps/essence/server/services/menu.ts
+import type { GatewayGetMenuResponse, Menu, MenuCategory } from '@nextorders/food-schema'
+import { eq } from 'drizzle-orm'
+import { drizzle } from 'drizzle-orm/libsql'
+import * as schema from '~/server/db/schema'
+
+// Импортируем продукты из статики
 import { burgers } from './data/products/burgers'
 import { desserts } from './data/products/desserts'
 import { hotMeals } from './data/products/hotMeals'
@@ -6,98 +12,89 @@ import { salads } from './data/products/salads'
 import { snacks } from './data/products/snacks'
 import { soups } from './data/products/soups'
 
-const categories: Menu['categories'] = [
-  {
-    id: 'burgers',
-    slug: 'burgers',
-    title: [
-      {
-        locale: 'ru',
-        value: 'Бургеры',
-      },
-    ],
-    icon: 'i-fluent-emoji-flat:hamburger',
-    products: burgers,
-  },
-  {
-    id: 'hot-meals',
-    slug: 'hot-meals',
-    title: [
-      {
-        locale: 'ru',
-        value: 'Горячие блюда',
-      },
-    ],
-    icon: 'i-fluent-emoji-flat:spaghetti',
-    products: hotMeals,
-  },
-  {
-    id: 'salads',
-    slug: 'salads',
-    title: [
-      {
-        locale: 'ru',
-        value: 'Салаты',
-      },
-    ],
-    icon: 'i-fluent-emoji-flat:green-salad',
-    products: salads,
-  },
-  {
-    id: 'soups',
-    slug: 'soups',
-    title: [
-      {
-        locale: 'ru',
-        value: 'Супы',
-      },
-    ],
-    icon: 'i-fluent-emoji-flat:pot-of-food',
-    products: soups,
-  },
-  {
-    id: 'snacks',
-    slug: 'snacks',
-    title: [
-      {
-        locale: 'ru',
-        value: 'Закуски',
-      },
-    ],
-    icon: 'i-fluent-emoji-flat:sandwich',
-    products: snacks,
-  },
-  {
-    id: 'desserts',
-    slug: 'desserts',
-    title: [
-      {
-        locale: 'ru',
-        value: 'Десерты',
-      },
-    ],
-    icon: 'i-fluent-emoji-flat:shortcake',
-    products: desserts,
-  },
-]
+const logger = useLogger('menu-service')
 
-const menu: Menu = {
-  id: 'default-menu',
-  title: [
-    {
-      locale: 'ru',
-      value: 'Обычное меню',
-    },
-  ],
-  slug: 'default-menu',
-  isActive: true,
-  categories,
+// Маппинг slug категории к статическим продуктам
+const productsMap: Record<string, any[]> = {
+  'burgers': burgers,
+  'hot-meals': hotMeals,
+  'salads': salads,
+  'soups': soups,
+  'snacks': snacks,
+  'desserts': desserts,
 }
 
-export function handleGetMenu(): GatewayGetMenuResponse {
-  return {
-    ok: true,
-    type: 'getMenu',
-    result: menu,
+// Получаем переменную окружения
+
+const config = useRuntimeConfig()
+const dbUrl = config.dbFileName
+
+export async function handleGetMenu(): Promise<GatewayGetMenuResponse> {
+  try {
+    const db = drizzle(dbUrl, { schema })
+
+    // Получаем активное меню
+    const menusList = await db.select()
+      .from(schema.menus)
+      .where(eq(schema.menus.isActive, true))
+      .limit(1)
+
+    const activeMenu = menusList[0]
+
+    if (!activeMenu) {
+      logger.warn('No active menu found')
+      return {
+        ok: true,
+        type: 'getMenu',
+        result: null as any,
+      }
+    }
+
+    // Получаем все категории
+    const categoriesFromDb = await db.select()
+      .from(schema.categories)
+      .orderBy(schema.categories.sortOrder)
+
+    // Формируем категории с продуктами из статики
+    const menuCategories: MenuCategory[] = categoriesFromDb.map((category) => ({
+      id: category.id,
+      slug: category.slug,
+      title: [
+        {
+          locale: 'ru' as const,
+          value: category.title,
+        },
+      ],
+      icon: category.icon || undefined,
+      products: productsMap[category.slug] || [],
+    }))
+
+    const menu: Menu = {
+      id: activeMenu.id,
+      title: [
+        {
+          locale: 'ru' as const,
+          value: activeMenu.title,
+        },
+      ],
+      slug: activeMenu.slug,
+      isActive: activeMenu.isActive,
+      categories: menuCategories,
+    }
+
+    logger.info(`Menu loaded: ${menu.id} with ${menuCategories.length} categories`)
+
+    return {
+      ok: true,
+      type: 'getMenu',
+      result: menu,
+    }
+  } catch (err) {
+    const error = err as Error
+    logger.error('Error fetching menu:', error.message)
+    throw createError({
+      statusCode: 500,
+      message: 'Failed to fetch menu',
+    })
   }
 }

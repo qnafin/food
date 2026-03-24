@@ -18,13 +18,14 @@ export default defineNuxtConfig({
   },
   i18n: {
     strategy: 'no_prefix',
-    defaultLocale: 'en',
+    defaultLocale: 'ru',
     detectBrowserLanguage: {
       useCookie: true,
       alwaysRedirect: true,
     },
     locales: [
       { code: 'ru', language: 'ru-RU', name: 'Русский' },
+      { code: 'en', language: 'en-US', name: 'English' },
     ],
   },
   css: [resolvePath('./app/assets/css/main.css')],

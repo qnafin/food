@@ -7,7 +7,7 @@ supportedArchitectures:
   cpu: [x64, arm64]
   os: [linux, darwin, win32]
 
-trustPolicy: no-downgrade
+#trustPolicy: no-downgrade
 
 packages:
   - apps/*
@@ -54,5 +54,12 @@ catalogs:
     vitest: ^4.1.0
   types:
     '@types/node': ^25.5.0
-
+  database:
+    '@libsql/client': ^0.15.0
+    'drizzle-orm': ^0.38.0
+    'drizzle-kit': ^0.31.10
+    'better-sqlite3': ^11.0.0
+    '@types/better-sqlite3': ^7.6.8
+    'tsx': ^4.7.0
+    'dotenv': ^16.4.5
 autoInstallPeers: true
