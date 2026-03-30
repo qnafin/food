@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { useLogger } from '@nextorders/core/server/utils/logger'
 import { drizzle } from 'drizzle-orm/libsql'
 import { categories, menus } from '../schema'
@@ -6,7 +7,6 @@ import 'dotenv/config'
 
 const logger = useLogger('seed-menu')
 
-// eslint-disable-next-line node/prefer-global/process
 const db = drizzle(process.env.DB_FILE_NAME!)
 
 async function seedMenu() {
@@ -53,6 +53,5 @@ async function seedMenu() {
 seedMenu().catch((err) => {
   const error = err as Error
   logger.error('Seed failed:', error.message)
-  // eslint-disable-next-line node/prefer-global/process
   process.exit(1)
 })
