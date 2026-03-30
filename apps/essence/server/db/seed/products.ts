@@ -1,6 +1,5 @@
 import process from 'node:process'
 import { drizzle } from 'drizzle-orm/libsql'
-// Импортируем статические данные (убедитесь, что пути правильные)
 import { burgers } from '../../services/data/products/burgers'
 import { desserts } from '../../services/data/products/desserts'
 import { hotMeals } from '../../services/data/products/hotMeals'

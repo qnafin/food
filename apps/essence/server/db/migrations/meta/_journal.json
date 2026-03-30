@@ -43,6 +43,13 @@
       "when": 1774857356832,
       "tag": "0005_lush_radioactive_man",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1774873492492,
+      "tag": "0006_medical_zarda",
+      "breakpoints": true
     }
   ]
 }

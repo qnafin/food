@@ -28,21 +28,54 @@ const orderStore = useOrderStore()
 
 const defaultTimeSlot = '0'
 
+// Список доступных слотов
 const items = computed(() =>
   [
     { label: dict('web-app.checkout.as-soon-as-possible'), value: defaultTimeSlot },
-    ...channelStore.timeSlots.map((slot) => (
-      {
-        label: `${slot.start} - ${slot.end}`,
-        value: `${slot.start} - ${slot.end}`,
-      }
-    )),
+    ...channelStore.timeSlots.map((slot) => ({
+      label: `${slot.start} - ${slot.end}`,
+      value: `${slot.start} - ${slot.end}`,
+    })),
   ],
 )
 
+// Преобразование ISO даты в значение слота, если время попадает в интервал
+function findSlotByIso(isoString: string): string | null {
+  if (!isoString || isoString === defaultTimeSlot) {
+    return null
+  }
+  const date = new Date(isoString)
+  if (Number.isNaN(date.getTime())) {
+    return null
+  }
+  // Получаем время в формате HH:MM
+  const targetTime = date.toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })
+  const slot = channelStore.timeSlots.find((slot) => slot.start <= targetTime && targetTime <= slot.end)
+  return slot ? `${slot.start} - ${slot.end}` : null
+}
+
+// Инициализация состояния из orderStore
+const initialReadyBy = orderStore.readyBy?.length ? orderStore.readyBy : defaultTimeSlot
+const initialReadyType = orderStore.readyType ?? 'asap'
+
+// Если readyBy — ISO-дата, пытаемся преобразовать в слот
+let finalReadyBy = initialReadyBy
+let finalReadyType = initialReadyType
+if (initialReadyBy !== defaultTimeSlot && initialReadyBy.includes('T') && initialReadyBy.includes('Z')) {
+  const foundSlot = findSlotByIso(initialReadyBy)
+  if (foundSlot) {
+    finalReadyBy = foundSlot
+    finalReadyType = 'scheduled'
+  } else {
+    // Слот не найден, сбрасываем на дефолтный без тоста
+    finalReadyBy = defaultTimeSlot
+    finalReadyType = 'asap'
+  }
+}
+
 const state = ref<Pick<Order, 'readyBy' | 'readyType'>>({
-  readyBy: orderStore.readyBy?.length ? orderStore.readyBy : defaultTimeSlot,
-  readyType: orderStore.readyType ?? 'asap',
+  readyBy: finalReadyBy,
+  readyType: finalReadyType,
 })
 
 const selectedTimeSlotValue = ref<string>(state.value.readyBy)
@@ -55,16 +88,24 @@ watch(selectedTimeSlotValue, () => {
 watch(state, () => {
   orderStore.readyBy = state.value.readyBy
   orderStore.readyType = state.value.readyType
-
   orderStore.isSaved = false
 }, { deep: true })
 
 watch(items, () => {
-  // If there is no selected time slot, select the default
-  if (selectedTimeSlotValue.value !== defaultTimeSlot && !items.value.some((i) => i.value === selectedTimeSlotValue.value)) {
+  // Если список слотов пуст (только дефолтный), не выполняем проверку
+  if (items.value.length <= 1) {
+    return
+  }
+
+  // Проверяем, был ли выбран конкретный слот (readyType === 'scheduled')
+  // и этого слота больше нет в новом списке
+  if (
+    state.value.readyType === 'scheduled'
+    && selectedTimeSlotValue.value !== defaultTimeSlot
+    && !items.value.some((i) => i.value === selectedTimeSlotValue.value)
+  ) {
     selectedTimeSlotValue.value = defaultTimeSlot
 
-    // Tell the user that the time slot has been reset
     toast.add({
       title: dict('web-app.checkout.selected-time-unavailable'),
       description: dict('web-app.checkout.selected-time-unavailable-description'),
