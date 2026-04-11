@@ -15,6 +15,13 @@
       "when": 1775917870899,
       "tag": "0001_glorious_polaris",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1775919619960,
+      "tag": "0002_misty_snowbird",
+      "breakpoints": true
     }
   ]
 }
