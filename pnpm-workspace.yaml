@@ -1,19 +1,22 @@
-catalogMode: prefer
-
-shamefullyHoist: true
-shellEmulator: true
-
-supportedArchitectures:
-  cpu: [x64, arm64]
-  os: [linux, darwin, win32]
-
 #trustPolicy: no-downgrade
 
 packages:
   - apps/*
   - packages/*
+autoInstallPeers: true
+catalog:
+  '@types/pg': ^8.20.0
+  pg: ^8.20.0
 
 catalogs:
+  database:
+    '@libsql/client': ^0.15.0
+    '@types/better-sqlite3': ^7.6.8
+    'better-sqlite3': ^11.0.0
+    'dotenv': ^16.4.5
+    'drizzle-kit': ^0.31.10
+    'drizzle-orm': ^0.38.0
+    'tsx': ^4.7.0
   dev:
     '@antfu/eslint-config': ^7.7.2
     '@commitlint/cli': ^20.5.0
@@ -35,6 +38,7 @@ catalogs:
     unbuild: ^3.6.1
     vite: ^7.3.1
     vue-tsc: ^3.2.5
+    xlsx: ^0.18.5
   integrations:
     '@date-fns/tz': ^1.4.1
     '@neoconfetti/vue': ^2.2.1
@@ -54,12 +58,10 @@ catalogs:
     vitest: ^4.1.0
   types:
     '@types/node': ^25.5.0
-  database:
-    '@libsql/client': ^0.15.0
-    'drizzle-orm': ^0.38.0
-    'drizzle-kit': ^0.31.10
-    'better-sqlite3': ^11.0.0
-    '@types/better-sqlite3': ^7.6.8
-    'tsx': ^4.7.0
-    'dotenv': ^16.4.5
-autoInstallPeers: true
+
+shamefullyHoist: true
+shellEmulator: true
+
+supportedArchitectures:
+  cpu: [ x64, arm64 ]
+  os: [ linux, darwin, win32 ]

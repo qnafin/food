@@ -19,12 +19,12 @@
   },
   "dependencies": {
     "@date-fns/tz": "catalog:integrations",
-    "@libsql/client": "catalog:database",
     "@nextorders/food-schema": "workspace:*",
     "@paralleldrive/cuid2": "catalog:integrations",
-    "better-sqlite3": "catalog:database",
+    "@types/pg": "catalog:",
     "dotenv": "catalog:database",
-    "drizzle-orm": "catalog:database"
+    "drizzle-orm": "catalog:database",
+    "pg": "catalog:"
   },
   "devDependencies": {
     "@types/better-sqlite3": "catalog:database",

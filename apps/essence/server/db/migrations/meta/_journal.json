@@ -1,54 +1,12 @@
 {
   "version": "7",
-  "dialect": "sqlite",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "6",
-      "when": 1774340802537,
-      "tag": "0000_tiny_scrambler",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1774350902725,
-      "tag": "0001_common_meteorite",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1774851421157,
-      "tag": "0002_faithful_giant_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1774852001052,
-      "tag": "0003_majestic_alice",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "6",
-      "when": 1774853348489,
-      "tag": "0004_motionless_sugar_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "6",
-      "when": 1774857356832,
-      "tag": "0005_lush_radioactive_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "6",
-      "when": 1774873492492,
-      "tag": "0006_medical_zarda",
+      "version": "7",
+      "when": 1775914868051,
+      "tag": "0000_sloppy_outlaw_kid",
       "breakpoints": true
     }
   ]

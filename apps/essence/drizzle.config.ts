@@ -1,11 +1,12 @@
+import process from 'node:process'
 import { defineConfig } from 'drizzle-kit'
 import 'dotenv/config'
 
 export default defineConfig({
-  out: './server/db/migrations', // меняем на правильный путь
+  out: './server/db/migrations',
   schema: './server/db/schema/index.ts',
-  dialect: 'sqlite',
+  dialect: 'postgresql', // меняем с 'sqlite' на 'postgresql'
   dbCredentials: {
-    url: './server/db/sqlite.db',
+    url: process.env.POSTGRES_URL!, // используем переменную окружения
   },
 })
