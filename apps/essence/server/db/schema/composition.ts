@@ -1,7 +1,7 @@
 import { createId } from '@paralleldrive/cuid2'
 // server/db/schema/composition.ts
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { products, productVariants } from './products'
+import { products, productVariants } from './index'
 
 // Ингредиенты (уникальные названия)
 export const ingredients = sqliteTable('ingredients', {

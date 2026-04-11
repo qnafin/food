@@ -1,7 +1,7 @@
 import { createId } from '@paralleldrive/cuid2'
 // server/db/schema/recommended.ts
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { products, productVariants } from './products'
+import { products, productVariants } from './index'
 
 export const recommendedProducts = sqliteTable('recommended_products', {
   id: text('id').primaryKey().$defaultFn(() => createId()),

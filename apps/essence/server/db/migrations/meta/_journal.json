@@ -8,6 +8,13 @@
       "when": 1775914868051,
       "tag": "0000_sloppy_outlaw_kid",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1775917870899,
+      "tag": "0001_glorious_polaris",
+      "breakpoints": true
     }
   ]
 }
