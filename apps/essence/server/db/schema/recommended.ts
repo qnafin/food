@@ -1,13 +1,12 @@
-import { createId } from '@paralleldrive/cuid2'
-// server/db/schema/recommended.ts
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { products, productVariants } from './index'
+import { integer, pgTable, timestamp } from 'drizzle-orm/pg-core'
+import { products } from './products'
+import { productVariants } from './productVariants'
 
-export const recommendedProducts = sqliteTable('recommended_products', {
-  id: text('id').primaryKey().$defaultFn(() => createId()),
-  productId: text('product_id').references(() => products.id).notNull(),
-  recommendedProductId: text('recommended_product_id').references(() => products.id).notNull(),
-  recommendedVariantId: text('recommended_variant_id').references(() => productVariants.id),
-  sortOrder: integer('sort_order').notNull().default(0),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+export const recommendedProducts = pgTable('recommended_products', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  productId: integer().notNull().references(() => products.id),
+  recommendedProductId: integer().notNull().references(() => products.id),
+  recommendedVariantId: integer().references(() => productVariants.id),
+  sortOrder: integer().notNull().default(0),
+  createdAt: timestamp().defaultNow(),
 })

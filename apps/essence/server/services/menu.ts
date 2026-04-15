@@ -1,21 +1,18 @@
 // server/services/menu.ts
 import type { GatewayGetMenuResponse, Menu, MenuCategory } from '@nextorders/food-schema'
 import { asc, eq } from 'drizzle-orm'
-import { drizzle } from 'drizzle-orm/libsql'
+import { db } from '~/server/db' // единый экземпляр PostgreSQL
 import * as schema from '~/server/db/schema'
 import { useLogger } from '~/server/utils/logger'
 import { getProduct } from './product'
 
 const logger = useLogger('menu-service')
-const config = useRuntimeConfig()
-const dbUrl = config.dbFileName
 
 export async function handleGetMenu(): Promise<GatewayGetMenuResponse> {
   try {
-    const db = drizzle(dbUrl, { schema })
-
     // Активное меню
-    const menusList = await db.select()
+    const menusList = await db
+      .select()
       .from(schema.menus)
       .where(eq(schema.menus.isActive, true))
       .limit(1)
@@ -26,14 +23,16 @@ export async function handleGetMenu(): Promise<GatewayGetMenuResponse> {
     }
 
     // Категории
-    const categoriesFromDb = await db.select()
+    const categoriesFromDb = await db
+      .select()
       .from(schema.categories)
       .orderBy(asc(schema.categories.sortOrder))
 
     // Собираем категории с продуктами
     const menuCategories: MenuCategory[] = []
     for (const category of categoriesFromDb) {
-      const productsInCategory = await db.select()
+      const productsInCategory = await db
+        .select()
         .from(schema.products)
         .where(eq(schema.products.categoryId, category.id))
         .orderBy(asc(schema.products.sortOrder))
@@ -43,7 +42,7 @@ export async function handleGetMenu(): Promise<GatewayGetMenuResponse> {
       )
 
       menuCategories.push({
-        id: category.id,
+        id: category.id.toString(), // если API ожидает строку, преобразуем
         slug: category.slug,
         title: [{ locale: 'ru', value: category.title }],
         icon: category.icon ?? undefined,
@@ -52,7 +51,7 @@ export async function handleGetMenu(): Promise<GatewayGetMenuResponse> {
     }
 
     const menu: Menu = {
-      id: activeMenu.id,
+      id: activeMenu.id.toString(),
       title: [{ locale: 'ru', value: activeMenu.title }],
       slug: activeMenu.slug,
       isActive: activeMenu.isActive,

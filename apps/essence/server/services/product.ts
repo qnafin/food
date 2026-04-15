@@ -1,3 +1,4 @@
+// server/services/product.ts
 import type {
   CompositionIngredient,
   CompositionProductItem,
@@ -9,23 +10,20 @@ import type {
 } from '@nextorders/food-schema'
 import { createId } from '@paralleldrive/cuid2'
 import { asc, eq } from 'drizzle-orm'
-import { drizzle } from 'drizzle-orm/libsql'
+import { db } from '~/server/db' // единый экземпляр для PostgreSQL
 import * as schema from '~/server/db/schema'
 import { safeJsonParse } from '../utils/safeJsonParse'
 
-const config = useRuntimeConfig()
-const dbUrl = config.dbFileName
-
-// Получение вариантов продукта
-async function getProductVariants(productId: string): Promise<ProductVariant[]> {
-  const db = drizzle(dbUrl, { schema })
-  const variants = await db.select()
+// Получение вариантов продукта (productId теперь number)
+async function getProductVariants(productId: number): Promise<ProductVariant[]> {
+  const variants = await db
+    .select()
     .from(schema.productVariants)
     .where(eq(schema.productVariants.productId, productId))
     .orderBy(asc(schema.productVariants.sortOrder))
 
   return variants.map((v) => ({
-    id: v.id,
+    id: v.id.toString(), // на всякий случай преобразуем number → string (если API ожидает строку)
     title: v.title ? [{ locale: 'ru', value: v.title }] : [],
     images: safeJsonParse(v.images, []),
     video: safeJsonParse(v.video, undefined),
@@ -39,8 +37,7 @@ async function getProductVariants(productId: string): Promise<ProductVariant[]> 
 }
 
 // Получение бейджей продукта
-async function getProductBadges(productId: string): Promise<ProductBadge[]> {
-  const db = drizzle(dbUrl, { schema })
+async function getProductBadges(productId: number): Promise<ProductBadge[]> {
   const relations = await db
     .select({
       badge: schema.badges,
@@ -52,29 +49,28 @@ async function getProductBadges(productId: string): Promise<ProductBadge[]> {
     .orderBy(asc(schema.productBadges.sortOrder))
 
   return relations.map((r) => ({
-    id: r.badge.id,
+    id: r.badge.id.toString(),
     title: [{ locale: 'ru', value: r.badge.title }],
   }))
 }
 
 // Получение рекомендуемых товаров
-async function getRecommendedProducts(productId: string): Promise<RecommendedProduct[]> {
-  const db = drizzle(dbUrl, { schema })
-  const recs = await db.select()
+async function getRecommendedProducts(productId: number): Promise<RecommendedProduct[]> {
+  const recs = await db
+    .select()
     .from(schema.recommendedProducts)
     .where(eq(schema.recommendedProducts.productId, productId))
     .orderBy(asc(schema.recommendedProducts.sortOrder))
 
   return recs.map((r) => ({
-    id: r.id,
-    productId: r.recommendedProductId,
-    productVariantId: r.recommendedVariantId ?? '',
+    id: r.id.toString(),
+    productId: r.recommendedProductId.toString(),
+    productVariantId: r.recommendedVariantId?.toString() ?? '',
   }))
 }
 
 // Получение ингредиентов продукта
-async function getIngredients(productId: string): Promise<CompositionIngredient[]> {
-  const db = drizzle(dbUrl, { schema })
+async function getIngredients(productId: number): Promise<CompositionIngredient[]> {
   const relations = await db
     .select({
       ingredient: schema.ingredients,
@@ -91,8 +87,7 @@ async function getIngredients(productId: string): Promise<CompositionIngredient[
 }
 
 // Получение состава (продукты внутри продукта)
-async function getProductComposition(productId: string): Promise<ProductComposition | null> {
-  const db = drizzle(dbUrl, { schema })
+async function getProductComposition(productId: number): Promise<ProductComposition | null> {
   const compositionRows = await db
     .select()
     .from(schema.productComposition)
@@ -104,26 +99,28 @@ async function getProductComposition(productId: string): Promise<ProductComposit
   }
 
   const products: CompositionProductItem[] = compositionRows.map((row) => ({
-    id: createId(), // генерируем уникальный id для связи
-    productId: row.childProductId,
-    productVariantId: row.childVariantId ?? '',
+    id: createId(),
+    productId: row.childProductId.toString(),
+    productVariantId: row.childVariantId?.toString() ?? '',
   }))
 
   return { products }
 }
 
-// Получение полного продукта
+// Получение полного продукта (productRow должен содержать числовой id)
 export async function getProduct(productRow: any, includeRecommended: boolean = false): Promise<Product> {
+  const productId = productRow.id // теперь number
+
   const [variants, recommended, badges, ingredients, composition] = await Promise.all([
-    getProductVariants(productRow.id),
-    includeRecommended ? getRecommendedProducts(productRow.id) : Promise.resolve([]),
-    getProductBadges(productRow.id),
-    getIngredients(productRow.id),
-    getProductComposition(productRow.id),
+    getProductVariants(productId),
+    includeRecommended ? getRecommendedProducts(productId) : Promise.resolve([]),
+    getProductBadges(productId),
+    getIngredients(productId),
+    getProductComposition(productId),
   ])
 
   const product: Product = {
-    id: productRow.id,
+    id: productId.toString(), // если API ожидает строку
     slug: productRow.slug,
     title: productRow.title ? [{ locale: 'ru', value: productRow.title }] : [],
     description: productRow.description ? [{ locale: 'ru', value: productRow.description }] : [],
@@ -132,16 +129,16 @@ export async function getProduct(productRow: any, includeRecommended: boolean = 
     variants,
   }
 
-  if (recommended.length > 0) {
+  if (recommended.length) {
     product.recommendedProducts = recommended
   }
-  if (badges.length > 0) {
+  if (badges.length) {
     product.badges = badges
   }
 
-  if (ingredients.length > 0 || composition) {
+  if (ingredients.length || composition) {
     const compositionObj: ProductComposition = {}
-    if (ingredients.length > 0) {
+    if (ingredients.length) {
       compositionObj.ingredients = ingredients
     }
     if (composition) {
