@@ -3,29 +3,20 @@
 
   <div>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-0 gap-y-4 sm:gap-4">
-      <div class="col-span-1 relative w-full aspect-square">
-        <div class="relative w-full h-full">
-          <ProductImage
-            :images="selectedVariant?.images ?? []"
-            :lazy="false"
-            size="md"
-          />
-
-          <ProductVideo
-            v-if="selectedVariant?.video"
-            :video="selectedVariant.video"
-          />
-        </div>
-
-        <div v-if="product.badges?.length" class="absolute left-2.5 right-6 bottom-3.5">
-          <div class="flex flex-col gap-1.5">
-            <ProductBadge
-              v-for="badge in product.badges"
-              :key="badge.id"
-              :badge="badge"
-            />
-          </div>
-        </div>
+      <div class="col-span-1">
+        <ProductMediaGallery :selected-variant="selectedVariant">
+          <template #badges>
+            <div v-if="product.badges?.length" class="absolute left-2.5 right-6 bottom-3.5">
+              <div class="flex flex-col gap-1.5">
+                <ProductBadge
+                  v-for="badge in product.badges"
+                  :key="badge.id"
+                  :badge="badge"
+                />
+              </div>
+            </div>
+          </template>
+        </ProductMediaGallery>
       </div>
 
       <div class="col-span-2">
@@ -168,10 +159,7 @@ const menuStore = useMenuStore()
 
 const product = menuStore.getProductBySlug(String(params.productSlug))
 if (!product) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: 'Product not found',
-  })
+  throw createError({ statusCode: 404, statusMessage: 'Product not found' })
 }
 
 useHead({
@@ -179,24 +167,17 @@ useHead({
 })
 
 const variantItems = computed(() => product.variants.map((variant) => ({ label: optionsStore.getLocaleValue(variant.title), value: variant.id })))
-
 const withSingleVariant = computed<boolean>(() => product.variants.length === 1)
-
 const selectedVariantId = ref(product.variants[0]?.id)
 const selectedVariant = computed(() => product.variants.find(({ id }) => id === selectedVariantId.value))
 
 const weightValue = computed(() => selectedVariant.value?.weightValue)
 const weightUnit = computed(() => getWeightLocalizedUnit(selectedVariant.value?.weightUnit))
-
 const line = computed(() => orderStore.items.find((l) => l.variantId === selectedVariant.value?.id))
-
 const category = menuStore.getCategoryByProductId(product.id)
 
 const breadcrumbs = computed(() => [
   { label: dict('common.home'), icon: 'lucide:house', to: '/' },
-  {
-    label: optionsStore.getLocaleValue(category?.title),
-    to: `/${category?.slug}`,
-  },
+  { label: optionsStore.getLocaleValue(category?.title), to: `/${category?.slug}` },
 ])
 </script>

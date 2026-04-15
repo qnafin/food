@@ -13,6 +13,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@fancyapps/ui": "catalog:integrations",
     "@neoconfetti/vue": "catalog:integrations",
     "@nextorders/core": "workspace:*",
     "@nextorders/food-schema": "workspace:*",
