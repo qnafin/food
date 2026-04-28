@@ -1,5 +1,11 @@
 <template>
   <MaintenanceMessage v-if="channelStore.isOnMaintenance" />
+  <HeroSection />
+  <div class="md:mt-2" />
+  <ServicesSection />
+  <BatterySection class="md:mt-2" />
+  <ReviewsSection class="md:mt-2" />
+  <FinalCTASection class="md:mt-2" />
 
   <div class="md:mt-2" />
 
@@ -19,6 +25,12 @@
 </template>
 
 <script setup lang="ts">
+import BatterySection from '~/components/sections/BatterySection.vue'
+import FinalCTASection from '~/components/sections/FinalCTASection.vue'
+import HeroSection from '~/components/sections/HeroSection.vue'
+import ReviewsSection from '~/components/sections/ReviewsSection.vue'
+import ServicesSection from '~/components/sections/ServicesSection.vue'
+
 const optionsStore = useOptionsStore()
 const channelStore = useChannelStore()
 const menuStore = useMenuStore()
