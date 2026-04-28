@@ -3,8 +3,8 @@ import { ChannelSchema } from './channel'
 import { MenuSchema } from './menu'
 import { OptionsSchema } from './options'
 import { AddressSuggestionSchema, DeliveryMethodSchema, OrderItemChangeSchema, OrderSchema } from './order'
+import { ServiceSchema } from './service'
 import { OpeningStatusSchema, TimePeriodSchema } from './time'
-
 /**
  * Gateway Types
  */
@@ -19,6 +19,7 @@ export const GatewayActionTypeSchema = z.enum([
   'incrementOrderItemQuantity',
   'decrementOrderItemQuantity',
   'getMenu',
+  'getServices',
   'getDeliveryByCourierStatus',
   'getSelfPickupStatus',
   'getTimeSlots',
@@ -261,6 +262,24 @@ export const GatewayCheckDeliveryZoneResponseSchema = BaseResponseSchema.extend(
 })
 export type GatewayCheckDeliveryZoneResponse = z.infer<typeof GatewayCheckDeliveryZoneResponseSchema>
 
+export const GatewayGetServicesRequestSchema
+  = GatewayRequestSchema.extend({
+    type: z.literal('getServices'),
+  })
+
+export type GatewayGetServicesRequest
+  = z.infer<typeof GatewayGetServicesRequestSchema>
+
+export const GatewayGetServicesResponseSchema
+  = BaseResponseSchema.extend({
+    type: z.literal('getServices'),
+
+    result: ServiceSchema.array(),
+  })
+
+export type GatewayGetServicesResponse
+  = z.infer<typeof GatewayGetServicesResponseSchema>
+
 /**
  * Combined Gateway Response
  */
@@ -280,5 +299,6 @@ export const GatewayResponseSchema = z.discriminatedUnion('type', [
   GatewayGetTimeSlotsResponseSchema,
   GatewaySuggestAddressesResponseSchema,
   GatewayCheckDeliveryZoneResponseSchema,
+  GatewayGetServicesResponseSchema,
 ])
 export type GatewayResponse = z.infer<typeof GatewayResponseSchema>

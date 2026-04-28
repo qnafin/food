@@ -3,6 +3,7 @@ import { handleGetChannels, handleGetDeliveryByCourierStatus, handleGetSelfPicku
 import { handleGetMenu } from '~/server/services/menu'
 import { handleGetOptions } from '~/server/services/options'
 import { handleAddOrderItem, handleChangeOrderItemQuantity, handleCompleteOrder, handleCreateOrder, handleGetOrder, handleUpdateOrder } from '~/server/services/order'
+import { handleGetServices } from '~/server/services/service'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -15,6 +16,8 @@ export default defineEventHandler(async (event) => {
         return handleGetChannels()
       case 'getMenu':
         return handleGetMenu()
+      case 'getServices':
+        return handleGetServices()
       case 'getOrder':
         return handleGetOrder(request.body as GatewayGetOrderRequest['body'])
       case 'createOrder':
