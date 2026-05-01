@@ -21,9 +21,9 @@ export const ServiceSchema = z.object({
   features: z.string().array(),
   problems: z.string().array(),
   steps: z.string().array(),
-
+  brands: z.string().array(),
   medias: ServiceMediaSchema.array(),
-
+  isLocalOnly: z.boolean().optional(),
   isPopular: z.boolean().optional(),
 })
 

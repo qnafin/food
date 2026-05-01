@@ -1,69 +1,71 @@
 <template>
-  <section id="reviews" class="bg-red-950 py-8">
+  <section id="reviews" class="py-12 border-t border-gray-800">
     <div class="max-w-7xl mx-auto px-6">
-      <!-- HEADER -->
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-12">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
         <div>
-          <h2 class="text-2xl md:text-3xl font-bold">
+          <h2 class="text-2xl md:text-3xl font-semibold text-highlighted">
             Отзывы клиентов
           </h2>
-          <p class="text-gray-400 mt-2">
+          <p class="text-muted mt-2">
             Более 60 реальных отзывов с Авито
           </p>
         </div>
 
-        <!-- TRUST -->
-        <div class="bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-sm">
-          ⭐ 60+ отзывов <br>
-          📦 Работаю по всей России
+        <div class="bg-elevated/50 border border-gray-800 rounded-xl px-5 py-3 text-sm text-muted">
+          <div class="flex items-center gap-2">
+            <span>⭐ 60+ отзывов</span>
+            <span class="text-gray-600">|</span>
+            <span>📦 Работаю по всей России</span>
+          </div>
         </div>
       </div>
 
-      <!-- GRID -->
       <div class="grid md:grid-cols-3 gap-6">
         <UCard
-          v-for="(item, i) in reviews"
-          :key="i"
-          class="flex flex-col"
+          v-for="(item, idx) in reviews"
+          :key="idx"
+          class="flex flex-col h-full bg-elevated/30 border-gray-800"
         >
-          <!-- IMAGE -->
-          <div class="aspect-[4/4] rounded-lg overflow-hidden mb-4 bg-gray-800 flex items-center justify-center text-gray-500">
-            <!-- заменить на img -->
-            {{ item.image }}
-            <!--
-            <img :src="item.image" class="w-full h-full object-cover" />
-            -->
+          <div class="aspect-video rounded-lg overflow-hidden mb-4 bg-gray-800 flex items-center justify-center text-muted">
+            <!-- Если есть реальное изображение, замените на <img :src="item.image" class="w-full h-full object-cover" /> -->
+            <UIcon name="lucide:message-square-quote" class="size-10" />
           </div>
 
-          <!-- TEXT -->
-          <div class="text-sm text-gray-300 flex-1">
-            "{{ item.text }}"
+          <div class="text-sm text-muted flex-1 italic">
+            “{{ item.text }}”
           </div>
 
-          <!-- SOURCE -->
-          <div class="text-xs text-gray-500 mt-4">
+          <div class="text-xs text-gray-500 mt-4 flex items-center gap-1">
+            <UIcon name="lucide:star" class="size-3 fill-orange-400 stroke-orange-400" />
             {{ item.source }}
           </div>
         </UCard>
       </div>
 
-      <!-- CTA -->
       <div class="mt-12 text-center">
-        <p class="text-gray-400 mb-4">
+        <p class="text-muted mb-4">
           Посмотреть все отзывы можно на Авито
         </p>
 
         <div class="flex flex-wrap justify-center gap-4">
           <UButton
-            color="orange"
-            to="https://www.avito.ru/brands/f4b586a3ec508d953816e12c63935a74/all/predlozheniya_uslug"
+            color="secondary"
+            variant="solid"
+            icon="lucide:external-link"
+            :to="avitoReviewsLink"
             target="_blank"
+            class="font-medium"
           >
             Смотреть все отзывы
           </UButton>
 
-          <UButton variant="outline">
-            Написать
+          <UButton
+            variant="outline"
+            icon="lucide:message-circle"
+            class="font-medium"
+            @click="openTelegramForReviews"
+          >
+            Написать отзыв
           </UButton>
         </div>
       </div>
@@ -71,21 +73,29 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
+// Ссылка на Авито (замените на свою)
+const avitoReviewsLink = 'https://www.avito.ru/brands/f4b586a3ec508d953816e12c63935a74/all/predlozheniya_uslug'
+
+// Контакты для отзыва (можно использовать те же, что в других секциях)
+const telegramLink = 'https://t.me/ваш_ник'
+
+function openTelegramForReviews() {
+  window.open(telegramLink, '_blank')
+}
+
+// Массив отзывов (можно будет в будущем вынести в стор)
 const reviews = [
   {
-    image: '1 → аккумулятор',
-    text: `1 → аккумуляторСпасибо! Акум отличный, мороза не боится. Для активного бурения льда идеален.`,
+    text: 'Спасибо! Аккумулятор отличный, мороза не боится. Для активного бурения льда идеален.',
     source: 'Авито',
   },
   {
-    image: '1 → самокат',
-    text: 'Аккумулятор для шуруповёрта ледобура. Сделка состоялась Продавец все подробно объяснил Был всегда на связи Товар соответствует заявленному Продавца рекомендую',
+    text: 'Аккумулятор для шуруповёрта ледобура. Продавец всё подробно объяснил, всегда на связи. Товар соответствует заявленному. Продавца рекомендую.',
     source: 'Авито',
   },
   {
-    image: '1 → общий',
-    text: 'Обращался по самокату — починил за день',
+    text: 'Обращался по самокату — починил за день. Быстро, качественно, с гарантией.',
     source: 'Авито',
   },
 ]

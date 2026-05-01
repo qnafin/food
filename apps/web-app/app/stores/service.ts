@@ -1,7 +1,5 @@
-import type {
-  GatewayGetServicesResponse,
-  Service,
-} from '@nextorders/food-schema'
+import type { Service }
+  from '@nextorders/food-schema'
 
 export const useServiceStore = defineStore(
   'service',
@@ -9,27 +7,24 @@ export const useServiceStore = defineStore(
     const services = ref<Service[]>([])
 
     async function update() {
-      const response
-        = await $fetch<GatewayGetServicesResponse>(
-          '/api/storefront/gateway',
-          {
-            method: 'POST',
-
-            body: {
-              type: 'getServices',
-            },
-
-          },
+      try {
+        const data = await $fetch<Service[]>(
+          '/api/services',
         )
 
-      if (!response.ok) {
-        return
-      }
+        if (!data) {
+          return
+        }
 
-      services.value = response.result
+        services.value = data
+      } catch {
+        // API unavailable
+      }
     }
 
-    function getServiceBySlug(slug: string) {
+    function getServiceBySlug(
+      slug: string,
+    ): Service | undefined {
       return services.value.find(
         (service) => service.slug === slug,
       )

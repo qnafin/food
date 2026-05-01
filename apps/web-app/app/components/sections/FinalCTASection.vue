@@ -1,22 +1,22 @@
 <template>
-  <section class="bg-red-950 py-8 border-t border-gray-800">
+  <section class=" py-12 border-t border-gray-800">
     <div class="max-w-5xl mx-auto px-6 text-center">
-      <!-- TITLE -->
-      <h2 class="text-2xl md:text-3xl font-bold mb-6">
+      <h2 class="text-2xl md:text-3xl font-semibold text-highlighted mb-4">
         Нужен ремонт или оценка?
       </h2>
 
-      <!-- SUB -->
-      <p class="text-gray-400 mb-8">
+      <p class="text-muted mb-8">
         Напишите или отправьте фото — скажу стоимость и сроки
       </p>
 
-      <!-- CTA -->
-      <div class="flex flex-col sm:flex-row justify-center gap-4 mb-10">
+      <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12">
         <UButton
           size="lg"
-          color="orange"
-          class="justify-center"
+          color="secondary"
+          icon="lucide:send"
+          :to="telegramLink"
+          target="_blank"
+          class="font-medium"
         >
           Написать в Telegram
         </UButton>
@@ -24,59 +24,91 @@
         <UButton
           size="lg"
           variant="outline"
-          class="justify-center"
+          icon="lucide:image"
+          class="font-medium"
+          @click="openWhatsApp"
         >
           Отправить фото
         </UButton>
       </div>
 
-      <!-- CONTACTS -->
-      <div class="grid sm:grid-cols-3 gap-6 text-sm text-gray-400 mb-10">
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
-          <div class="font-medium text-white mb-1">
-            Telegram
+      <div class="grid sm:grid-cols-3 gap-6 text-sm text-muted mb-12">
+        <div class="bg-elevated/50 border border-gray-800 rounded-xl p-4 text-center">
+          <div class="font-medium text-white mb-1 flex items-center justify-center gap-2">
+            <UIcon name="lucide:send" class="size-4" /> Telegram
           </div>
-          <UButton to="https://t.me/username" target="_blank">
-            @your_username
+          <UButton
+            :to="telegramLink"
+            target="_blank"
+            variant="link"
+            color="secondary"
+            class="text-sm"
+          >
+            @ваш_ник
           </UButton>
         </div>
 
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
-          <div class="font-medium text-white mb-1">
-            Телефон
+        <div class="bg-elevated/50 border border-gray-800 rounded-xl p-4 text-center">
+          <div class="font-medium text-white mb-1 flex items-center justify-center gap-2">
+            <UIcon name="lucide:phone" class="size-4" /> Телефон
           </div>
-          <div>+7 (XXX) XXX-XX-XX</div>
+          <UButton
+            :to="`tel:${phoneNumber}`"
+            variant="link"
+            color="secondary"
+            class="text-sm"
+          >
+            {{ formattedPhone }}
+          </UButton>
         </div>
 
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
-          <div class="font-medium text-white mb-1">
-            Город
+        <div class="bg-elevated/50 border border-gray-800 rounded-xl p-4 text-center">
+          <div class="font-medium text-white mb-1 flex items-center justify-center gap-2">
+            <UIcon name="lucide:map-pin" class="size-4" /> Город
           </div>
           <div>Магнитогорск</div>
         </div>
       </div>
 
-      <!-- TRUST -->
-      <div class="flex flex-wrap justify-center gap-6 text-sm text-gray-500 mb-6">
-        <div>✔ Бесплатная диагностика</div>
-        <div>✔ Гарантия до 6 месяцев</div>
-        <div>✔ Более 60 отзывов</div>
+      <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted mb-6">
+        <div class="flex items-center gap-1">
+          ✔ Бесплатная диагностика
+        </div>
+        <div class="flex items-center gap-1">
+          ✔ Гарантия до 6 месяцев
+        </div>
+        <div class="flex items-center gap-1">
+          ✔ Более 60 отзывов
+        </div>
       </div>
 
-      <!-- AVITO LINK -->
       <div class="text-sm">
-        <a
-          href="https://www.avito.ru/brands/f4b586a3ec5ddd953816e12c63935a74/all/predlozheniya_uslug"
+        <UButton
+          :to="avitoLink"
           target="_blank"
+          variant="link"
+          color="secondary"
           class="text-orange-400 hover:underline"
         >
           Смотреть отзывы на Авито →
-        </a>
+        </UButton>
       </div>
     </div>
   </section>
 </template>
 
-<script setup>
-// сюда можно добавить реальные ссылки
+<script setup lang="ts">
+// Контакты (замените на свои)
+const telegramLink = 'https://t.me/ваш_ник'
+const phoneNumber = '+79001234567'
+const formattedPhone = '+7 (900) 123-45-67'
+const avitoLink = 'https://www.avito.ru/brands/f4b586a3ec5ddd953816e12c63935a74/all/predlozheniya_uslug'
+
+// Регулярное выражение для удаления всего, кроме цифр
+const nonDigitsRegex = /\D/g
+
+function openWhatsApp() {
+  const text = encodeURIComponent('Здравствуйте! Нужна оценка ремонта, отправляю фото.')
+  window.open(`https://wa.me/${phoneNumber.replace(nonDigitsRegex, '')}?text=${text}`, '_blank')
+}
 </script>

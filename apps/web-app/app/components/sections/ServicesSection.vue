@@ -1,67 +1,119 @@
 <template>
-  <section id="fero" class="bg-red-950 py-8">
+  <section id="services" class="py-12 border-t border-gray-800">
     <div class="max-w-7xl mx-auto px-6">
-      <!-- TITLE -->
-      <h2 class="text-2xl md:text-3xl font-bold mb-10">
-        Услуги
-      </h2>
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-semibold text-highlighted">
+            Услуги
+          </h2>
+          <p class="text-muted mt-1">
+            Выберите интересующий вид ремонта
+          </p>
+        </div>
+        <UButton
+          to="/services"
+          variant="outline"
+          color="secondary"
+          icon="lucide:arrow-right"
+          trailing
+          class="font-medium"
+        >
+          Все услуги
+        </UButton>
+      </div>
 
-      <!-- GRID -->
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <UCard class="hover:scale-[1.02] transition">
-          <template #default>
-            <div class="text-lg font-semibold mb-2">
-              🛴 Самокаты
+        <NuxtLink
+          v-for="service in displayedServices"
+          :key="service.id"
+          :to="`/services/${service.slug}`"
+          class="block hover:scale-[1.02] transition-transform duration-200"
+        >
+          <UCard class="h-full bg-elevated/30 border-gray-800">
+            <div class="text-lg font-semibold text-highlighted mb-2 flex items-center gap-2">
+              <span>{{ getIconForService(service) }}</span>
+              <span>{{ service.title }}</span>
             </div>
-            <p class="text-sm text-gray-400">
-              Ремонт любой сложности: мотор-колёса, контроллеры, проводка
+            <p class="text-sm text-muted line-clamp-2">
+              {{ service.subtitle || truncateDescription(service.description, 80) }}
             </p>
-            <div class="mt-4 text-orange-400 font-medium">
-              от 500 ₽
+            <div class="mt-4 flex items-center justify-between">
+              <span class="text-orange-400 font-medium">{{ service.price }}</span>
+              <UBadge
+                v-if="service.isLocalOnly"
+                color="neutral"
+                variant="subtle"
+                size="sm"
+              >
+                📍 Магнитогорск
+              </UBadge>
+              <UBadge
+                v-else-if="service.slug === 'custom-battery'"
+                color="green"
+                variant="subtle"
+                size="sm"
+              >
+                🚚 По РФ
+              </UBadge>
             </div>
-          </template>
-        </UCard>
-
-        <UCard class="hover:scale-[1.02] transition">
-          <div class="text-lg font-semibold mb-2">
-            🚲 Велосипеды
-          </div>
-          <p class="text-sm text-gray-400">
-            Механика и электроника, дисплеи, тормоза
-          </p>
-          <div class="mt-4 text-orange-400 font-medium">
-            от 500 ₽
-          </div>
-        </UCard>
-
-        <UCard class="hover:scale-[1.02] transition">
-          <div class="text-lg font-semibold mb-2">
-            🔋 Аккумуляторы
-          </div>
-          <p class="text-sm text-gray-400">
-            Ремонт, переделка, увеличение ёмкости (18650)
-          </p>
-          <div class="mt-4 text-orange-400 font-medium">
-            гарантия до 6 мес
-          </div>
-        </UCard>
-
-        <UCard class="hover:scale-[1.02] transition">
-          <div class="text-lg font-semibold mb-2">
-            🛵 Скутеры
-          </div>
-          <p class="text-sm text-gray-400">
-            Полный ремонт и обслуживание
-          </p>
-          <div class="mt-4 text-orange-400 font-medium">
-            от 1000 ₽
-          </div>
-        </UCard>
+          </UCard>
+        </NuxtLink>
       </div>
     </div>
   </section>
 </template>
 
-<script setup>
-// пока без логики
+<script setup lang="ts">
+import { useServiceStore } from '../../stores/service'
+
+const serviceStore = useServiceStore()
+await serviceStore.update()
+
+const services = computed(() => serviceStore.services || [])
+const displayedServices = computed(() => services.value.slice(0, 4))
+
+function getIconForService(service: any): string {
+  const title = service.title.toLowerCase()
+  if (title.includes('самокат')) {
+    return '🛴'
+  }
+  if (title.includes('велосипед')) {
+    return '🚲'
+  }
+  if (title.includes('аккумулятор') || title.includes('батаре')) {
+    return '🔋'
+  }
+  if (title.includes('скутер') || title.includes('мопед')) {
+    return '🛵'
+  }
+  if (title.includes('диагностик')) {
+    return '🔍'
+  }
+  if (title.includes('контроллер') || title.includes('проводк')) {
+    return '⚡'
+  }
+  if (title.includes('тормоз')) {
+    return '🛑'
+  }
+  if (title.includes('мотор-колес')) {
+    return '⚙️'
+  }
+  if (title.includes('шиномонтаж')) {
+    return '🛞'
+  }
+  if (title.includes('дисплей')) {
+    return '📟'
+  }
+  if (title.includes('гидроизоляц')) {
+    return '💧'
+  }
+  return '🔧'
+}
+
+function truncateDescription(text: string, length: number): string {
+  if (!text) {
+    return ''
+  }
+  return text.length > length ? `${text.slice(0, length)}…` : text
+}
 </script>
