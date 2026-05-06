@@ -1,6 +1,7 @@
 export * from './badges'
 export * from './categories'
 export * from './ingredients'
+export * from './leads'
 export * from './menu'
 export * from './orders'
 export * from './productComposition'

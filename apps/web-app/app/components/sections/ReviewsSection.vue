@@ -58,15 +58,6 @@
           >
             Смотреть все отзывы
           </UButton>
-
-          <UButton
-            variant="outline"
-            icon="lucide:message-circle"
-            class="font-medium"
-            @click="openTelegramForReviews"
-          >
-            Написать отзыв
-          </UButton>
         </div>
       </div>
     </div>
@@ -76,13 +67,6 @@
 <script setup lang="ts">
 // Ссылка на Авито (замените на свою)
 const avitoReviewsLink = 'https://www.avito.ru/brands/f4b586a3ec508d953816e12c63935a74/all/predlozheniya_uslug'
-
-// Контакты для отзыва (можно использовать те же, что в других секциях)
-const telegramLink = 'https://t.me/ваш_ник'
-
-function openTelegramForReviews() {
-  window.open(telegramLink, '_blank')
-}
 
 // Массив отзывов (можно будет в будущем вынести в стор)
 const reviews = [

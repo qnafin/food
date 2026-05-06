@@ -38,23 +38,8 @@
 
         <!-- Кнопки действий -->
         <div class="mt-6 flex flex-wrap gap-4">
-          <UButton
-            size="xl"
-            variant="solid"
-            color="secondary"
-            icon="lucide:send"
-            label="Отправить фото"
-            class="font-medium"
-            @click="openWhatsApp"
-          />
-          <UButton
-            size="xl"
-            variant="outline"
-            icon="lucide:message-circle"
-            label="Написать"
-            class="font-medium"
-            @click="openTelegram"
-          />
+          <ButtonLead size="lg" :lead-type="service?.title || 'general'" />
+          <ButtonVk size="lg" />
         </div>
       </div>
     </div>
@@ -179,15 +164,10 @@ function formatPrice(price?: string): string {
 
 // Функции для связи (замените номера на свои)
 const whatsappNumber = '79000000000'
-const telegramLink = 'https://t.me/your_nickname'
 
 function openWhatsApp() {
   const text = encodeURIComponent(`Здравствуйте! Интересует услуга: ${service.value?.title}`)
   window.open(`https://wa.me/${whatsappNumber}?text=${text}`, '_blank')
-}
-
-function openTelegram() {
-  window.open(telegramLink, '_blank')
 }
 
 useSeoMeta({

@@ -19,12 +19,14 @@ export const GatewayActionTypeSchema = z.enum([
   'incrementOrderItemQuantity',
   'decrementOrderItemQuantity',
   'getMenu',
-  'getServices',
   'getDeliveryByCourierStatus',
   'getSelfPickupStatus',
   'getTimeSlots',
   'suggestAddresses',
   'checkDeliveryZone',
+
+  'createLead',
+  'getServices',
 ])
 export type GatewayActionType = z.infer<typeof GatewayActionTypeSchema>
 
@@ -280,6 +282,23 @@ export const GatewayGetServicesResponseSchema
 export type GatewayGetServicesResponse
   = z.infer<typeof GatewayGetServicesResponseSchema>
 
+export const GatewayCreateLeadRequestSchema = GatewayRequestSchema.extend({
+  type: z.literal('createLead'),
+  body: z.object({
+    type: z.string(),
+    message: z.string(),
+    phone: z.string().optional(),
+    fileBase64: z.string().optional(),
+    filename: z.string().optional(),
+  }),
+})
+
+// новый ответ (просто подтверждение)
+export const GatewayCreateLeadResponseSchema = BaseResponseSchema.extend({
+  type: z.literal('createLead'),
+  result: z.object({ success: z.boolean() }),
+})
+
 /**
  * Combined Gateway Response
  */
@@ -300,5 +319,6 @@ export const GatewayResponseSchema = z.discriminatedUnion('type', [
   GatewaySuggestAddressesResponseSchema,
   GatewayCheckDeliveryZoneResponseSchema,
   GatewayGetServicesResponseSchema,
+  GatewayCreateLeadResponseSchema,
 ])
 export type GatewayResponse = z.infer<typeof GatewayResponseSchema>

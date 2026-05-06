@@ -16,9 +16,11 @@ import type {
   Order,
   OrderItem,
 } from '@nextorders/food-schema'
+
 import { and, eq } from 'drizzle-orm'
 import { db } from '~/server/db' // единый экземпляр PostgreSQL
 import * as schema from '~/server/db/schema'
+import { sendVKMessage } from '~/server/utils/vk-messenger'
 import { handleGetMenu } from './menu'
 
 const logger = useLogger('order')
@@ -199,7 +201,8 @@ export async function handleCompleteOrder(data: GatewayCompleteOrderRequest['bod
   if (order.status !== 'draft') {
     throw new Error('Order is not in draft status')
   }
-
+  const orderMessage = `🛒 Новый заказ #${order.id}\n\nИмя: ${order.name}\nТелефон: ${order.phone}\nСумма: ${order.totalPrice} руб.`
+  await sendVKMessage(orderMessage).catch((e) => logger.error('Ошибка уведомления о заказе', e))
   await db
     .update(schema.orders)
     .set({ status: 'created' })
@@ -209,6 +212,7 @@ export async function handleCompleteOrder(data: GatewayCompleteOrderRequest['bod
   if (!completedOrder) {
     throw new Error('Order not found')
   }
+
   logger.success(`Order completed: ${completedOrder.id}`, completedOrder)
   return { ok: true, type: 'completeOrder', result: completedOrder }
 }

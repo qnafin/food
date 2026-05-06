@@ -10,26 +10,8 @@
       </p>
 
       <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12">
-        <UButton
-          size="lg"
-          color="secondary"
-          icon="lucide:send"
-          :to="telegramLink"
-          target="_blank"
-          class="font-medium"
-        >
-          Написать в Telegram
-        </UButton>
-
-        <UButton
-          size="lg"
-          variant="outline"
-          icon="lucide:image"
-          class="font-medium"
-          @click="openWhatsApp"
-        >
-          Отправить фото
-        </UButton>
+        <ButtonVk size="lg" />
+        <ButtonLead size="lg" lead-type="footer" />
       </div>
 
       <div class="grid sm:grid-cols-3 gap-6 text-sm text-muted mb-12">
@@ -103,12 +85,4 @@ const telegramLink = 'https://t.me/ваш_ник'
 const phoneNumber = '+79001234567'
 const formattedPhone = '+7 (900) 123-45-67'
 const avitoLink = 'https://www.avito.ru/brands/f4b586a3ec5ddd953816e12c63935a74/all/predlozheniya_uslug'
-
-// Регулярное выражение для удаления всего, кроме цифр
-const nonDigitsRegex = /\D/g
-
-function openWhatsApp() {
-  const text = encodeURIComponent('Здравствуйте! Нужна оценка ремонта, отправляю фото.')
-  window.open(`https://wa.me/${phoneNumber.replace(nonDigitsRegex, '')}?text=${text}`, '_blank')
-}
 </script>
