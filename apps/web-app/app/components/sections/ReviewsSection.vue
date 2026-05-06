@@ -7,15 +7,17 @@
             Отзывы клиентов
           </h2>
           <p class="text-muted mt-2">
-            Более 60 реальных отзывов с Авито
+            Более {{ appConfig.reviewsCount }} реальных отзывов на Авито и Яндекс
           </p>
         </div>
 
         <div class="bg-elevated/50 border border-gray-800 rounded-xl px-5 py-3 text-sm text-muted">
-          <div class="flex items-center gap-2">
-            <span>⭐ 60+ отзывов</span>
+          <div class="flex flex-wrap items-center gap-2">
+            <span>⭐ {{ appConfig.reviewsCount }}+ отзывов</span>
             <span class="text-gray-600">|</span>
             <span>📦 Работаю по всей России</span>
+            <span class="text-gray-600">|</span>
+            <span>🏆 {{ appConfig.yandexRating }} на Яндекс Картах</span>
           </div>
         </div>
       </div>
@@ -27,7 +29,6 @@
           class="flex flex-col h-full bg-elevated/30 border-gray-800"
         >
           <div class="aspect-video rounded-lg overflow-hidden mb-4 bg-gray-800 flex items-center justify-center text-muted">
-            <!-- Если есть реальное изображение, замените на <img :src="item.image" class="w-full h-full object-cover" /> -->
             <UIcon name="lucide:message-square-quote" class="size-10" />
           </div>
 
@@ -35,16 +36,25 @@
             “{{ item.text }}”
           </div>
 
-          <div class="text-xs text-gray-500 mt-4 flex items-center gap-1">
-            <UIcon name="lucide:star" class="size-3 fill-orange-400 stroke-orange-400" />
-            {{ item.source }}
+          <div class="mt-4 flex items-center justify-between">
+            <div class="text-xs text-gray-500 flex items-center gap-1">
+              <UIcon name="lucide:star" class="size-3 fill-orange-400 stroke-orange-400" />
+              {{ item.source }}
+            </div>
+            <UBadge
+              :color="item.source === 'Яндекс' ? 'green' : 'neutral'"
+              variant="subtle"
+              size="sm"
+            >
+              {{ item.source }}
+            </UBadge>
           </div>
         </UCard>
       </div>
 
       <div class="mt-12 text-center">
         <p class="text-muted mb-4">
-          Посмотреть все отзывы можно на Авито
+          Посмотреть все отзывы можно на сайтах-отзовиках
         </p>
 
         <div class="flex flex-wrap justify-center gap-4">
@@ -52,12 +62,26 @@
             color="secondary"
             variant="solid"
             icon="lucide:external-link"
-            :to="avitoReviewsLink"
+            :to="appConfig.avitoLink"
             target="_blank"
             class="font-medium"
           >
-            Смотреть все отзывы
+            Авито — все отзывы
           </UButton>
+          <UButton
+            color="secondary"
+            variant="solid"
+            icon="lucide:external-link"
+            :to="yandexMapsLink"
+            target="_blank"
+            class="font-medium"
+          >
+            Яндекс Карты — {{ Number(appConfig.yandexRating) }} звёзд
+          </UButton>
+        </div>
+
+        <div class="mt-6 text-xs text-muted">
+          ✅ Проверен на двух крупнейших платформах — честные отзывы реальных клиентов
         </div>
       </div>
     </div>
@@ -65,10 +89,11 @@
 </template>
 
 <script setup lang="ts">
-// Ссылка на Авито (замените на свою)
-const avitoReviewsLink = 'https://www.avito.ru/brands/f4b586a3ec508d953816e12c63935a74/all/predlozheniya_uslug'
+const appConfig = useAppConfig()
 
-// Массив отзывов (можно будет в будущем вынести в стор)
+// Ссылка на Яндекс Карты (замените на свою, если нужно)
+const yandexMapsLink = 'https://yandex.com/maps/-/CPWLBH7u'
+
 const reviews = [
   {
     text: 'Спасибо! Аккумулятор отличный, мороза не боится. Для активного бурения льда идеален.',
@@ -80,7 +105,7 @@ const reviews = [
   },
   {
     text: 'Обращался по самокату — починил за день. Быстро, качественно, с гарантией.',
-    source: 'Авито',
+    source: 'Яндекс',
   },
 ]
 </script>

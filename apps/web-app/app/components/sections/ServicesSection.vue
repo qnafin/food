@@ -22,7 +22,7 @@
         </UButton>
       </div>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 gap-6" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))">
         <NuxtLink
           v-for="service in displayedServices"
           :key="service.id"
@@ -44,11 +44,12 @@
                 color="neutral"
                 variant="subtle"
                 size="sm"
+                class="whitespace-nowrap"
               >
                 📍 Магнитогорск
               </UBadge>
               <UBadge
-                v-else-if="service.slug === 'custom-battery'"
+                v-else-if="service.isLocalOnly === false"
                 color="green"
                 variant="subtle"
                 size="sm"
@@ -70,7 +71,7 @@ const serviceStore = useServiceStore()
 await serviceStore.update()
 
 const services = computed(() => serviceStore.services || [])
-const displayedServices = computed(() => services.value.slice(0, 4))
+const displayedServices = computed(() => services.value.slice(0, 6))
 
 function getIconForService(service: any): string {
   const title = service.title.toLowerCase()

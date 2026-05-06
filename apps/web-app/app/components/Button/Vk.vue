@@ -29,6 +29,8 @@ withDefaults(defineProps<{
   label: 'Написать',
   customClass: '',
 })
-const config = useRuntimeConfig()
-const vkLink = config.public.vkLink
+
+const appConfig = useAppConfig()
+
+const vkLink = appConfig.vkLink
 </script>

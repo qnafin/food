@@ -1,7 +1,6 @@
 <template>
   <section class="relative overflow-hidden">
     <div class="absolute inset-0" />
-
     <div class="relative max-w-7xl mx-auto px-6 py-12 md:py-16 grid md:grid-cols-2 gap-12 items-center">
       <!-- левая колонка без изменений -->
       <div>
@@ -45,7 +44,7 @@
         </div>
         <div class="absolute -bottom-4 -left-4 bg-gray-100 border border-gray-800 rounded-xl px-4 py-2 text-sm text-muted flex items-center gap-2">
           <UIcon name="lucide:zap" class="size-4 text-orange-400" />
-          <span>Работаю лично / ⭐ 60+ отзывов на Авито</span>
+          <span>Работаю лично / ⭐ {{ appConfig.reviewsCount }}+ отзывов на Авито</span>
         </div>
       </div>
     </div>
@@ -53,4 +52,5 @@
 </template>
 
 <script setup lang="ts">
+const appConfig = useAppConfig()
 </script>

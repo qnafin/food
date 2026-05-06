@@ -1,4 +1,3 @@
-<!-- components/forms/LeadForm.vue -->
 <template>
   <form class="space-y-4" @submit.prevent="submitForm">
     <UFormField label="Ваше имя" :ui="{ label: 'text-muted text-sm' }">
@@ -11,7 +10,7 @@
     </UFormField>
 
     <UFormField
-      label="Номерыы телефона *"
+      label="Номер телефона *"
       :ui="{ label: 'text-muted text-sm' }"
       required
     >
@@ -106,6 +105,7 @@ const isValidPhone = ref(false)
 
 const { sendLead } = useLead()
 const { formatPhone, validatePhone } = usePhoneValidation()
+const toast = useToast() // ✅ добавлено
 
 function handlePhoneInput() {
   displayPhone.value = formatPhone(displayPhone.value)
@@ -149,7 +149,11 @@ async function submitForm() {
   phoneError.value = ''
 
   if (!form.problem.trim()) {
-    // alert('Пожалуйста, опишите проблему или задайте вопрос.')
+    toast.add({
+      title: 'Заполните описание',
+      description: 'Пожалуйста, опишите проблему или задайте вопрос.',
+      color: 'warning',
+    })
     return
   }
 
@@ -167,13 +171,25 @@ async function submitForm() {
     const result = await sendLead(props.leadType || 'general', message, form.phoneRaw, form.photo || undefined)
     if (result.success) {
       resetForm()
-      // alert('✅ Заявка отправлена! Мастер свяжется с вами в ближайшее время.')
+      toast.add({
+        title: '✅ Заявка отправлена!',
+        description: 'Мастер свяжется с вами в ближайшее время.',
+        color: 'success',
+      })
     } else {
-      // alert('❌ Не удалось отправить заявку. Попробуйте позже или напишите напрямую в VK.')
+      toast.add({
+        title: '❌ Ошибка отправки',
+        description: 'Не удалось отправить заявку. Попробуйте позже или напишите напрямую в VK.',
+        color: 'error',
+      })
     }
   } catch (error) {
     console.error('Lead error:', error)
-    // alert('❌ Произошла ошибка. Пожалуйста, попробуйте ещё раз.')
+    toast.add({
+      title: '❌ Произошла ошибка',
+      description: 'Пожалуйста, попробуйте ещё раз.',
+      color: 'error',
+    })
   } finally {
     isLoading.value = false
   }

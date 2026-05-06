@@ -91,7 +91,7 @@ export async function handleGetServices(): Promise<GatewayGetServicesResponse> {
         problems: ['быстро садится', 'не заряжается', 'потеря ёмкости', 'вздутие'],
         steps: ['Приносите шуруповерт+АКБ+зарядку', 'Диагностика', 'Согласование цены', 'Замена элементов', 'Тестирование'],
         medias: [{ id: 'battool1', url: '/images/placeholder.jpg' }],
-        isLocalOnly: true,
+        isLocalOnly: false,
         isPopular: true,
         brands: ['Makita', 'Bosch', 'Hitachi', 'Dewalt', 'Metabo', 'Интерскол', 'Зубр', 'Вихрь', 'Patriot', 'Ресанта', 'Greenworks', 'Калибр', 'Энергомаш', 'Союз', 'Энкор', 'Nanwei', 'Hammerdinger'],
       },

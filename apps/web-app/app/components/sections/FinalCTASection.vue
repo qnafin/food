@@ -17,25 +17,24 @@
       <div class="grid sm:grid-cols-3 gap-6 text-sm text-muted mb-12">
         <div class="bg-elevated/50 border border-gray-800 rounded-xl p-4 text-center">
           <div class="font-medium text-white mb-1 flex items-center justify-center gap-2">
-            <UIcon name="lucide:send" class="size-4" /> Telegram
+            <UIcon name="lucide:send" class="size-4" /> ВКонтакте
           </div>
           <UButton
-            :to="telegramLink"
+            :to="appConfig.vkLink"
             target="_blank"
             variant="link"
             color="secondary"
             class="text-sm"
           >
-            @ваш_ник
+            {{ appConfig.vkLinkText }}
           </UButton>
         </div>
-
         <div class="bg-elevated/50 border border-gray-800 rounded-xl p-4 text-center">
           <div class="font-medium text-white mb-1 flex items-center justify-center gap-2">
             <UIcon name="lucide:phone" class="size-4" /> Телефон
           </div>
           <UButton
-            :to="`tel:${phoneNumber}`"
+            :to="`tel:${appConfig.phoneNumber}`"
             variant="link"
             color="secondary"
             class="text-sm"
@@ -48,7 +47,7 @@
           <div class="font-medium text-white mb-1 flex items-center justify-center gap-2">
             <UIcon name="lucide:map-pin" class="size-4" /> Город
           </div>
-          <div>Магнитогорск</div>
+          <div>{{ appConfig.localCity }}</div>
         </div>
       </div>
 
@@ -60,13 +59,12 @@
           ✔ Гарантия до 6 месяцев
         </div>
         <div class="flex items-center gap-1">
-          ✔ Более 60 отзывов
+          ✔ Более {{ appConfig.reviewsCount }} отзывов
         </div>
       </div>
-
-      <div class="text-sm">
+      <div v-if="appConfig.avitoLink" class="text-sm">
         <UButton
-          :to="avitoLink"
+          :to="appConfig.avitoLink"
           target="_blank"
           variant="link"
           color="secondary"
@@ -80,9 +78,8 @@
 </template>
 
 <script setup lang="ts">
-// Контакты (замените на свои)
-const telegramLink = 'https://t.me/ваш_ник'
-const phoneNumber = '+79001234567'
-const formattedPhone = '+7 (900) 123-45-67'
-const avitoLink = 'https://www.avito.ru/brands/f4b586a3ec5ddd953816e12c63935a74/all/predlozheniya_uslug'
+const appConfig = useAppConfig()
+
+const phoneNumber = appConfig.phoneNumber ?? '+78000000000'
+const formattedPhone = phoneNumber.replace(/(\d)(\d{3})(\d{3})(\d{2})(\d{2})/, '$1 ($2) $3-$4-$5')
 </script>

@@ -115,7 +115,7 @@
           variant="outline"
           color="secondary"
           size="md"
-          @click="openWhatsApp"
+          @click="openLeadModal(service?.title || 'general')"
         >
           Заказать с доставкой
         </UButton>
@@ -131,6 +131,7 @@
 import FinalCTASection from '~/components/sections/FinalCTASection.vue'
 import ReviewsSection from '~/components/sections/ReviewsSection.vue'
 
+const { openLeadModal } = useLeadModal()
 const route = useRoute()
 const serviceStore = useServiceStore()
 
@@ -160,14 +161,6 @@ function formatPrice(price?: string): string {
     return 'Цена не указана'
   }
   return price
-}
-
-// Функции для связи (замените номера на свои)
-const whatsappNumber = '79000000000'
-
-function openWhatsApp() {
-  const text = encodeURIComponent(`Здравствуйте! Интересует услуга: ${service.value?.title}`)
-  window.open(`https://wa.me/${whatsappNumber}?text=${text}`, '_blank')
 }
 
 useSeoMeta({
