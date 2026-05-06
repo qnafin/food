@@ -20,7 +20,7 @@ import type {
 import { and, eq } from 'drizzle-orm'
 import { db } from '~/server/db' // единый экземпляр PostgreSQL
 import * as schema from '~/server/db/schema'
-import { sendVKMessage } from '~/server/utils/vk-messenger'
+import { formatOrderMessage, sendVKMessage } from '~/server/utils/vk-messenger'
 import { handleGetMenu } from './menu'
 
 const logger = useLogger('order')
@@ -64,9 +64,11 @@ async function getOrderItems(orderId: number): Promise<OrderItem[]> {
     orderId: row.orderId.toString(),
     productId: row.productId.toString(),
     productSlug: row.productSlug,
+    productTitle: row.productTitle.toString(),
     categoryId: row.categoryId.toString(),
     categorySlug: row.categorySlug,
     variantId: row.variantId?.toString() ?? '',
+    variantTitle: row.variantTitle.toString() ?? '',
     quantity: row.quantity,
     unitPrice: row.unitPrice,
     totalPrice: row.totalPrice,
@@ -201,8 +203,10 @@ export async function handleCompleteOrder(data: GatewayCompleteOrderRequest['bod
   if (order.status !== 'draft') {
     throw new Error('Order is not in draft status')
   }
-  const orderMessage = `🛒 Новый заказ #${order.id}\n\nИмя: ${order.name}\nТелефон: ${order.phone}\nСумма: ${order.totalPrice} руб.`
-  await sendVKMessage(orderMessage).catch((e) => logger.error('Ошибка уведомления о заказе', e))
+  // Формируем подробное сообщение
+  const fullOrderMessage = formatOrderMessage(order)
+  await sendVKMessage(fullOrderMessage).catch((e) => logger.error('Ошибка уведомления о заказе', e))
+
   await db
     .update(schema.orders)
     .set({ status: 'created' })
@@ -263,9 +267,11 @@ export async function handleAddOrderItem({ orderId, variantId }: GatewayAddOrder
     orderId: numericOrderId,
     productId: Number.parseInt(foundProduct.id, 10),
     productSlug: foundProduct.slug,
+    productTitle: foundProduct.title.find((t) => t.locale === 'ru')?.value ?? foundProduct.id,
     categoryId: Number.parseInt(foundCategory.id, 10),
     categorySlug: foundCategory.slug,
     variantId: Number.parseInt(foundVariant.id, 10),
+    variantTitle: foundVariant.title.find((t) => t.locale === 'ru')?.value ?? foundVariant.id,
     quantity: 1,
     unitPrice: foundVariant.price,
     totalPrice: foundVariant.price,

@@ -14,7 +14,7 @@ const props = defineProps<{
 
 const modalTitle = computed(() => {
   switch (props.leadType) {
-    case 'battery_estimate': return 'Оценка аккумулятора'
+    case 'battery_estimate': return 'Оценка работы'
     case 'scooter_repair': return 'Ремонт электросамоката'
     case 'ebike_repair': return 'Ремонт электровелосипеда'
     default: return 'Отправить заявку'

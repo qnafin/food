@@ -1,3 +1,4 @@
+import type { Order } from '@nextorders/food-schema'
 // apps/essence/server/utils/vk-messenger.ts
 import { Buffer } from 'node:buffer'
 import process from 'node:process'
@@ -110,4 +111,79 @@ export async function sendVKMessageWithPhoto(text: string, photoBase64: string, 
   } else {
     return sendVKMessage(`${text}\n\n⚠️ Фото не удалось загрузить.`)
   }
+}
+
+/**
+ * Формирует подробное сообщение о заказе для отправки в VK
+ */
+export function formatOrderMessage(order: Order): string {
+  const lines: string[] = []
+
+  // Заголовок
+  lines.push(`🛒 ЗАКАЗ #${order.id}`)
+  lines.push(`📅 ${new Date(order.createdAt).toLocaleString('ru-RU')}`)
+  lines.push('')
+
+  // Клиент
+  lines.push(`👤 Клиент: ${order.name}`)
+  lines.push(`📞 Телефон: ${order.phone}`)
+  if (order.note) {
+    lines.push(`📝 Комментарий: ${order.note}`)
+  }
+  lines.push('')
+
+  // Доставка / самовывоз
+  if (order.deliveryMethod === 'deliveryByCourier') {
+    lines.push(`🚚 Доставка по адресу:`)
+    const addr = order.address as any
+    if (addr?.street) {
+      lines.push(`   Улица: ${addr.street}`)
+    }
+    if (addr?.flat) {
+      lines.push(`   Квартира: ${addr.flat}`)
+    }
+    if (addr?.entrance) {
+      lines.push(`   Подъезд: ${addr.entrance}`)
+    }
+    if (addr?.floor) {
+      lines.push(`   Этаж: ${addr.floor}`)
+    }
+    if (addr?.intercom) {
+      lines.push(`   Домофон: ${addr.intercom}`)
+    }
+    if (addr?.addressNote) {
+      lines.push(`   Примечание: ${addr.addressNote}`)
+    }
+  } else {
+    lines.push(`🏢 Самовывоз`)
+    // можно добавить адрес склада, если есть поле address
+  }
+  lines.push('')
+
+  // Оплата
+  const paymentMethodText = order.paymentMethodId === 'cash' ? 'Наличные' : 'Картой онлайн'
+  lines.push(`💳 Оплата: ${paymentMethodText}`)
+  if (order.paymentMethodId === 'cash' && order.changeFrom) {
+    lines.push(`💰 Сдача с: ${order.changeFrom} ₽`)
+  }
+  lines.push('')
+
+  // Состав заказа
+  if (order.items.length === 0) {
+    lines.push(`📦 Состав заказа: (пусто)`)
+  } else {
+    lines.push(`📦 Состав заказа:`)
+    for (const item of order.items) {
+      const productTitle = item.productTitle
+      const variantTitle = item.variantTitle
+      const title = variantTitle ? `${productTitle} (${variantTitle})` : productTitle
+      lines.push(`   • ${title} — ${item.quantity} × ${item.unitPrice} ₽ = ${item.totalPrice} ₽`)
+    }
+  }
+  lines.push('')
+
+  // Итог
+  lines.push(`🔹 ИТОГО: ${order.totalPrice} ₽`)
+
+  return lines.join('\n')
 }

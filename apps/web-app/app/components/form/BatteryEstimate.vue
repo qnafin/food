@@ -16,7 +16,7 @@ const props = defineProps<{
 
 const formTitle = computed(() => {
   switch (props.leadType) {
-    case 'battery_estimate': return 'Оценка аккумулятора'
+    case 'battery_estimate': return 'Оценка работы'
     case 'scooter_repair': return 'Заявка на ремонт самоката'
     case 'ebike_repair': return 'Заявка на ремонт электровелосипеда'
     default: return 'Заявка на услугу'

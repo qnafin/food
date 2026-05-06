@@ -37,7 +37,7 @@
             color="neutral"
             variant="subtle"
           >
-            📍 Только в Магнитогорске
+            📍в Магнитогорске
           </UBadge>
           <UBadge
             v-else-if="service?.slug === 'custom-battery'"
