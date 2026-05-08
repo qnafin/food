@@ -57,6 +57,13 @@
       "when": 1778058951541,
       "tag": "0007_bright_pet_avengers",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1778217802539,
+      "tag": "0008_minor_ronan",
+      "breakpoints": true
     }
   ]
 }

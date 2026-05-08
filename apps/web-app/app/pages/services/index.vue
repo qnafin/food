@@ -26,13 +26,6 @@
         <div class="mt-4 flex items-center justify-between">
           <span class="text-orange-400 font-medium">{{ service.price }}</span>
           <UBadge
-            v-if="service.isPopular"
-            color="orange"
-            size="sm"
-          >
-            Популярно
-          </UBadge>
-          <UBadge
             v-if="service?.isLocalOnly"
             color="neutral"
             variant="subtle"
@@ -40,11 +33,11 @@
             📍в Магнитогорске
           </UBadge>
           <UBadge
-            v-else-if="service?.slug === 'custom-battery'"
+            v-else-if="!service?.isLocalOnly"
             color="green"
             variant="subtle"
           >
-            🚚 Доставка по России
+            🚚 по России
           </UBadge>
         </div>
       </UCard>

@@ -7,7 +7,7 @@
       <div class="col-span-1">
         <div class="relative">
           <img
-            :src="service?.medias[0]?.url || '/images/placeholder-service.jpg'"
+            :src="service?.images[0]?.url || '/images/placeholder-service.jpg'"
             :alt="service?.title"
             class="w-full rounded-lg object-cover aspect-square"
           >
