@@ -60,7 +60,12 @@
       <!-- Правая часть – форма оценки -->
       <div class="space-y-6">
         <div class="rounded-2xl overflow-hidden border border-gray-800 bg-elevated/50 aspect-video flex items-center justify-center text-muted">
-          <UIcon name="lucide:battery-charging" class="size-12" />
+          <img
+            :src="img"
+            alt="Ремонт электросамокатов и аккумуляторов"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          >
         </div>
         <FormBatteryEstimate lead-type="battery_estimate" />
       </div>
@@ -69,4 +74,5 @@
 </template>
 
 <script setup lang="ts">
+const img = 'https://sun9-4.userapi.com/s/v1/ig2/icoLHxce6TtFvoODOJBrypEXPVd4oTH9Dtdvif6fEDvWrelQ1Isqb-QCuwxKzWtRHVFrtO1foZVwYXU5K3--GyII.jpg?quality=95&as=32x23,48x35,72x52,108x78,160x115,240x173,360x259,480x345,540x389,640x460,720x518,1080x777,1280x921&from=bu&u=M9NAGpNs5Dog2y93BY_96HNz7Z5UtxlQZPSh8Mslw9s&cs=1280x0'
 </script>

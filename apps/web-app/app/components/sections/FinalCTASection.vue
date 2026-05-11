@@ -4,19 +4,16 @@
       <h2 class="text-2xl md:text-3xl font-semibold text-highlighted mb-4">
         Нужен ремонт или оценка?
       </h2>
-
       <p class="text-muted mb-8">
         Напишите или отправьте фото — скажу стоимость и сроки
       </p>
-
       <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12">
         <ButtonVk size="lg" />
         <ButtonLead size="lg" lead-type="footer" />
       </div>
-
       <div class="grid sm:grid-cols-3 gap-6 text-sm text-muted mb-12">
         <div class="bg-elevated/50 border border-gray-800 rounded-xl p-4 text-center">
-          <div class="font-medium text-white mb-1 flex items-center justify-center gap-2">
+          <div class="font-medium text-white-900 mb-1 flex items-center justify-center gap-2">
             <UIcon name="lucide:send" class="size-4" /> ВКонтакте
           </div>
           <UButton
@@ -30,7 +27,7 @@
           </UButton>
         </div>
         <div class="bg-elevated/50 border border-gray-800 rounded-xl p-4 text-center">
-          <div class="font-medium text-white mb-1 flex items-center justify-center gap-2">
+          <div class="font-medium text-white-900 mb-1 flex items-center justify-center gap-2">
             <UIcon name="lucide:phone" class="size-4" /> Телефон
           </div>
           <UButton
@@ -44,7 +41,7 @@
         </div>
 
         <div class="bg-elevated/50 border border-gray-800 rounded-xl p-4 text-center">
-          <div class="font-medium text-white mb-1 flex items-center justify-center gap-2">
+          <div class="font-medium text-white-900 mb-1 flex items-center justify-center gap-2">
             <UIcon name="lucide:map-pin" class="size-4" /> Город
           </div>
           <div>{{ appConfig.localCity }}</div>

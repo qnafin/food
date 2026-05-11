@@ -10,12 +10,14 @@ import type {
   GatewayGetMenuRequest,
   GatewayGetOptionsRequest,
   GatewayGetOrderRequest,
+  GatewayGetReviewsRequest,
   GatewayGetSelfPickupStatusRequest,
   GatewayGetTimeSlotsRequest,
   GatewayIncrementOrderItemQuantityRequest,
   GatewayResponse,
   GatewaySuggestAddressesRequest,
   GatewayUpdateOrderRequest,
+
 } from '@nextorders/food-schema'
 import { GatewayResponseSchema } from '@nextorders/food-schema'
 
@@ -35,6 +37,8 @@ type GatewayRequestMap = {
   getTimeSlots: GatewayGetTimeSlotsRequest
   suggestAddresses: GatewaySuggestAddressesRequest
   checkDeliveryZone: GatewayCheckDeliveryZoneRequest
+  getReviews: GatewayGetReviewsRequest
+  getServices: { type: 'getServices' }
 }
 
 type AllGatewayRequests = GatewayRequestMap[keyof GatewayRequestMap]

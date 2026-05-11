@@ -4,7 +4,7 @@
   <div class="md:mt-2" />
   <ServicesSection />
   <BatterySection class="md:mt-2" />
-  <ReviewsSection class="md:mt-2" />
+  <ReviewsSection class="md:mt-2" place="main" />
   <FinalCTASection class="md:mt-2" />
 
   <div class="md:mt-2" />

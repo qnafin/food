@@ -4,6 +4,7 @@ import { handleCreateLead } from '~/server/services/lead'
 import { handleGetMenu } from '~/server/services/menu'
 import { handleGetOptions } from '~/server/services/options'
 import { handleAddOrderItem, handleChangeOrderItemQuantity, handleCompleteOrder, handleCreateOrder, handleGetOrder, handleUpdateOrder } from '~/server/services/order'
+import { handleGetReviews } from '~/server/services/review'
 import { handleGetServices } from '~/server/services/service'
 
 export default defineEventHandler(async (event) => {
@@ -17,8 +18,6 @@ export default defineEventHandler(async (event) => {
         return handleGetChannels()
       case 'getMenu':
         return handleGetMenu()
-      case 'getServices':
-        return handleGetServices()
       case 'getOrder':
         return handleGetOrder(request.body as GatewayGetOrderRequest['body'])
       case 'createOrder':
@@ -39,12 +38,17 @@ export default defineEventHandler(async (event) => {
       case 'getTimeSlots':
         return handleGetTimeSlots(request.body as GatewayGetTimeSlotsRequest['body'])
       case 'createLead':
-      // Здесь важно учесть, что файл может приходить через FormData
-      // В текущем gateway мы ожидаем JSON-тело, поэтому файл лучше отправлять отдельным эндпоинтом.
-      // Либо расширить gateway для multipart.
-      // Для простоты пока сделаем JSON без файла.
+        // Здесь важно учесть, что файл может приходить через FormData
+        // В текущем gateway мы ожидаем JSON-тело, поэтому файл лучше отправлять отдельным эндпоинтом.
+        // Либо расширить gateway для multipart.
+        // Для простоты пока сделаем JSON без файла.
         return handleCreateLead(request.body as GatewayCreateLeadRequest['body'])
-
+      case 'getServices':
+        return handleGetServices()
+      case 'getReviews': {
+        const { place, serviceId } = request.body || {}
+        return handleGetReviews({ place, serviceId })
+      }
       default:
         throw createError({
           statusCode: 400,

@@ -40,8 +40,14 @@
       <!-- правая колонка (без изменений) -->
       <div class="relative">
         <div class="rounded-2xl overflow-hidden border border-gray-800 bg-elevated/50 aspect-video flex items-center justify-center text-muted">
-          <UIcon name="lucide:wrench" class="size-12" />
+          <img
+            :src="img"
+            alt="Ремонт электросамокатов и аккумуляторов"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          >
         </div>
+        <!-- остальной блок без изменений -->
         <div class="absolute -bottom-4 -left-4 bg-gray-100 border border-gray-800 rounded-xl px-4 py-2 text-sm text-muted flex items-center gap-2">
           <UIcon name="lucide:zap" class="size-4 text-orange-400" />
           <span>Работаю лично / ⭐ {{ appConfig.reviewsCount }}+ отзывов на Авито</span>
@@ -53,4 +59,6 @@
 
 <script setup lang="ts">
 const appConfig = useAppConfig()
+
+const img = 'https://20.img.avito.st/image/1/1.kRjX_La4PfHhS7_8-bKJF-VcP_dpXb_n4VA_82dVNfth.Ju5qX8lNeRH7sQkcPyQ1w6fktDg_p60WPcbPwUuME5Q?cqp=2.TSzMy-m0u9ojo94xoNTr4TIkcUBjMu1L_y5Z6Lr-VHA-3xfoRpsvf1jN4IBF36LEO13sxOCjYv9KRoXzpmAFvKTQ'
 </script>

@@ -122,7 +122,12 @@
       </div>
     </div>
 
-    <ReviewsSection class="md:mt-2" />
+    <ReviewsSection
+      class="md:mt-2"
+      place="service"
+      :service-id="service?.id"
+    />
+
     <FinalCTASection class="md:mt-2" />
   </div>
 </template>
