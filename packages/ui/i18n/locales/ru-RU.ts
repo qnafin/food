@@ -69,7 +69,7 @@ export const ru: Dictionary = {
       'ordered-title': 'Вы заказали',
     },
     'search': {
-      'placeholder': 'Найти блюдо',
+      'placeholder': 'Найти',
       'nothing-found': 'Ничего не найдено',
       'most-often': 'Находят чаще всего',
     },

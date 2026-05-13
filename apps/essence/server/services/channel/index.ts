@@ -25,10 +25,10 @@ const channels: Channel[] = [
   {
     id: 'moscow',
     selectorTitle: [{ locale: 'ru', value: 'Москва' }],
-    title: [{ locale: 'ru', value: 'Вкус на бегу в Москве' }],
-    description: [{ locale: 'ru', value: 'Насладитесь уникальными вкусами и приятной атмосферой' }],
+    title: [{ locale: 'ru', value: 'Дмитрий Аверьянов' }],
+    description: [{ locale: 'ru', value: 'Мастер по ремонту электротранспорта. Сборка аккумуляторов под заказ любого размера. Гарантия 6 месяцев.' }],
     url: 'https://demo.nextorders.space/moscow',
-    timeZone: '+03:00',
+    timeZone: '+05:00',
     isActive: true,
     deliveryByCourier: {
       isAvailable: true,
