@@ -18,6 +18,10 @@ export const links: Channel['links'] = {
       label: [{ locale: 'ru', value: 'Политика конфиденциальности' }],
       to: '/privacy',
     },
+    {
+      label: [{ locale: 'ru', value: 'Оплата' }],
+      to: '/payment',
+    },
   ],
   social: [
     {

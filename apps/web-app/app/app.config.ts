@@ -12,6 +12,19 @@ export default defineAppConfig({
   localCity: 'Магнитогорск',
   localAddress: 'г. Магнитогорск, ул. Прокатная, д. 88',
   yourName: 'ИП Аверьянов Д.C.',
-  ogrn: '123456789012345',
-  inn: '9876543210',
+  fullCompanyName: 'ИП Аверьянов Дмитрий Сергеевич',
+  bankCardNumber: '1234 5678 9012 3456',
+  enableDeliveryTime: false, // возможность указать время доставки
+  enableChangeOption: false, // указать сумму для сдачи
+  legalEntity: {
+    name: 'ИП Аверьянов Дмитрий Сергеевич',
+    inn: '1234567890',
+    kpp: '987654321',
+    ogrn: '123456789012345',
+    legalAddress: 'г. Магнитогорск, ул. Ленина, д. 1, оф. 5',
+    bankName: 'ФИЛИАЛ "ЦЕНТРАЛЬНЫЙ" БАНКА ВТБ (ПАО)',
+    bik: '044525000',
+    correspondentAccount: '30101810100000000000',
+    settlementAccount: '40702810100000000001',
+  },
 })

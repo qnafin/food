@@ -27,7 +27,7 @@ const channels: Channel[] = [
     selectorTitle: [{ locale: 'ru', value: 'Москва' }],
     title: [{ locale: 'ru', value: 'Дмитрий Аверьянов' }],
     description: [{ locale: 'ru', value: 'Мастер по ремонту электротранспорта. Сборка аккумуляторов под заказ любого размера. Гарантия 6 месяцев.' }],
-    url: 'https://demo.nextorders.space/moscow',
+    url: '/',
     timeZone: '+05:00',
     isActive: true,
     deliveryByCourier: {

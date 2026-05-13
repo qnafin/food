@@ -45,7 +45,8 @@
         </div>
 
         <p>{{ $dict('web-app.checkout.payment-title') }}: <span class="font-medium">{{ optionsStore.getLocaleValue(paymentMethodTitle) }}</span></p>
-        <p v-if="order?.changeFrom">
+        <p v-if="order?.changeFrom && appConfig.enableChangeOption">
+          {{ $dict('web-app.checkout.change-label') }}: <span class="font-medium">{{ order.changeFrom }} {{ optionsStore.currencySign }}</span>
           {{ $dict('web-app.checkout.change-label') }}: <span class="font-medium">{{ order.changeFrom }} {{ optionsStore.currencySign }}</span>
         </p>
         <p v-if="order?.note">
@@ -93,6 +94,7 @@
 
 <script setup lang="ts">
 import type { OrderDeliveryAddress, Warehouse } from '@nextorders/food-schema'
+import appConfig from '~/app.config'
 
 definePageMeta({
   layout: 'finish',

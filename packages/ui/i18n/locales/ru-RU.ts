@@ -32,7 +32,7 @@ export const ru: Dictionary = {
       'pickup-address': 'Адрес самовывоза',
       'address': {
         'title': 'Адрес',
-        'street': 'Улица и дом',
+        'street': 'Город, улица и дом',
         'flat': 'Кв./офис',
         'intercom': 'Домофон',
         'entrance': 'Подъезд',
@@ -47,7 +47,7 @@ export const ru: Dictionary = {
       'on-time': 'Ко времени',
       'as-soon-as-possible': 'Побыстрее',
       'order-title': 'Вы заказываете',
-      'order-note': 'Комментарий для кухни',
+      'order-note': 'Комментарий к заказу',
       'order-note-placeholder': 'Пожелания к заказу',
       'payment-title': 'Метод оплаты',
       'total-title': 'Итого',
@@ -64,8 +64,8 @@ export const ru: Dictionary = {
     },
     'finish': {
       'title': 'Заказ оформлен',
-      'success-message': 'Ваша заявка была успешно передана на обработку.',
-      'expect-call': 'Ожидайте звонка от оператора.',
+      'success-message': 'Мастер свяжется с вами в ближайшее время для подтверждения и сообщит реквизиты для оплаты.',
+      'expect-call': 'Ожидайте звонка.',
       'ordered-title': 'Вы заказали',
     },
     'search': {

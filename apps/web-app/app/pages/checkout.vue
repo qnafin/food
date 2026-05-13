@@ -30,7 +30,7 @@
         <div class="mb-6 px-3 md:pl-6 md:pr-0 flex flex-col gap-5">
           <CartDeliveryMethodSwitch />
 
-          <div class="motion-preset-slide-left-sm">
+          <div v-if="appConfig.enableDeliveryTime" class="motion-preset-slide-left-sm">
             <FormOrderTime />
           </div>
 
@@ -117,6 +117,7 @@ definePageMeta({
   layout: 'checkout',
 })
 
+const appConfig = useAppConfig()
 const { dict } = useDictionary()
 
 const channelStore = useChannelStore()
