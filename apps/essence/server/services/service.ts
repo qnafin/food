@@ -1,4 +1,6 @@
+// apps/essence/server/services/service.ts
 import type { GatewayGetServicesResponse, Service } from '@nextorders/food-schema'
+import { asc } from 'drizzle-orm' // добавьте импорт
 import { db } from '~/server/db'
 import { services } from '~/server/db/schema'
 import { useLogger } from '~/server/utils/logger'
@@ -7,7 +9,11 @@ const logger = useLogger('service-service')
 
 export async function handleGetServices(): Promise<GatewayGetServicesResponse> {
   try {
-    const rows = await db.select().from(services).orderBy(services.id)
+    // Сортируем по sortOrder, затем по id для детерминированности
+    const rows = await db
+      .select()
+      .from(services)
+      .orderBy(asc(services.sortOrder), asc(services.id))
 
     const result: Service[] = rows.map((row) => ({
       id: String(row.id),
@@ -21,7 +27,7 @@ export async function handleGetServices(): Promise<GatewayGetServicesResponse> {
       problems: JSON.parse(row.problems),
       steps: JSON.parse(row.steps),
       brands: JSON.parse(row.brands),
-      images: JSON.parse(row.images), // ✅ новое поле
+      images: JSON.parse(row.images),
       isLocalOnly: row.isLocalOnly ?? false,
       isPopular: row.isPopular ?? false,
     }))

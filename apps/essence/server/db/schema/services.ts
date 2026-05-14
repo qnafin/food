@@ -15,6 +15,7 @@ export const services = pgTable('services', {
   images: text().notNull(), // JSON array (ServiceImageSchema)
   isLocalOnly: boolean().default(false),
   isPopular: boolean().default(false),
+  sortOrder: integer().default(0).notNull(),
   createdAt: timestamp().defaultNow(),
   updatedAt: timestamp().defaultNow(),
 })
