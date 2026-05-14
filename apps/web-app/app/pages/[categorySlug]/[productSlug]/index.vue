@@ -79,7 +79,7 @@
         <ProductCompositionBlock :composition="product.composition" />
       </div>
 
-      <div v-if="product?.description" class="col-span-3">
+      <div v-if="product?.description?.length" class="col-span-3">
         <h2 class="mb-1 font-medium text-muted">
           {{ $dict('common.description') }}
         </h2>
@@ -88,46 +88,27 @@
         </div>
       </div>
 
-      <div v-if="selectedVariant?.nutritionFacts" class="col-span-2">
-        <h2 class="mb-1 font-medium text-muted">
-          {{ $dict('common.nutrition.value-title') }}
+      <div v-if="selectedVariant?.nutritionFacts && Object.keys(selectedVariant.nutritionFacts).length" class="col-span-2">
+        <h2 class="mb-2 font-medium text-muted">
+          Характеристики
         </h2>
-        <div class="py-3.5 px-4.5 w-fit flex flex-row gap-4 lg:gap-5 bg-elevated/50 rounded-lg">
-          <div>
-            <div class="font-medium">
-              {{ selectedVariant.nutritionFacts.calories }}
-            </div>
-            <div class="mt-1 text-base/4 lowercase text-muted">
-              {{ $dict('common.nutrition.kcal') }}
-            </div>
-          </div>
-          <div>
-            <div class="flex flex-row gap-0.5 font-medium">
-              {{ selectedVariant.nutritionFacts.protein }}
-              <span>{{ $dict('common.abbreviation.g') }}</span>
-            </div>
-            <div class="mt-1 text-base/4 lowercase text-muted">
-              {{ $dict('common.nutrition.protein') }}
-            </div>
-          </div>
-          <div>
-            <div class="flex flex-row gap-0.5 font-medium">
-              {{ selectedVariant.nutritionFacts.fat }}
-              <span>{{ $dict('common.abbreviation.g') }}</span>
-            </div>
-            <div class="mt-1 text-base/4 lowercase text-muted">
-              {{ $dict('common.nutrition.fat') }}
-            </div>
-          </div>
-          <div>
-            <div class="flex flex-row gap-0.5 font-medium">
-              {{ selectedVariant.nutritionFacts.carbohydrate }}
-              <span>{{ $dict('common.abbreviation.g') }}</span>
-            </div>
-            <div class="mt-1 text-base/4 lowercase text-muted">
-              {{ $dict('common.nutrition.carbohydrate') }}
-            </div>
-          </div>
+        <div class="bg-elevated/50 rounded-lg overflow-hidden border border-gray-800">
+          <table class="w-full text-sm">
+            <tbody>
+              <tr
+                v-for="(value, key) in displayableNutritionFacts"
+                :key="key"
+                class="border-b border-gray-800 last:border-b-0"
+              >
+                <td class="py-3 px-4 font-medium text-white w-1/2">
+                  {{ formatNutritionKey(key) }}
+                </td>
+                <td class="py-3 px-4 text-muted">
+                  {{ formatNutritionValue(key, value) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -158,6 +139,7 @@ const optionsStore = useOptionsStore()
 const menuStore = useMenuStore()
 
 const product = menuStore.getProductBySlug(String(params.productSlug))
+
 if (!product) {
   throw createError({ statusCode: 404, statusMessage: 'Product not found' })
 }
@@ -180,4 +162,55 @@ const breadcrumbs = computed(() => [
   { label: dict('common.home'), icon: 'lucide:house', to: '/' },
   { label: optionsStore.getLocaleValue(category?.title), to: `/${category?.slug}` },
 ])
+const siteName = optionsStore.getLocaleValue(channelStore.title) // или явная строка
+const categoryTitle = optionsStore.getLocaleValue(category?.title) || ''
+
+// Применяем SEO
+useProductSeo(product, selectedVariant.value, categoryTitle, siteName)
+
+// Получаем объект характеристик (без пустых значений)
+const displayableNutritionFacts = computed(() => {
+  const facts = selectedVariant.value?.nutritionFacts
+  if (!facts) {
+    return {}
+  }
+  const result = {}
+  for (const [key, val] of Object.entries(facts)) {
+    // пропускаем null, undefined, пустые строки
+    if (val === undefined || val === null || val === '') {
+      continue
+    }
+    result[key] = val
+  }
+  return result
+})
+
+// Форматирование названия характеристики
+function formatNutritionKey(key: string): string {
+  // Маппинг стандартных полей на русские названия
+  const map: Record<string, string> = {
+    calories: 'Энергетическая ценность',
+    protein: 'Белки',
+    fat: 'Жиры',
+    carbohydrate: 'Углеводы',
+  }
+  if (map[key]) {
+    return map[key]
+  }
+  // Для остальных ключей: первая буква заглавная, остальные строчные
+  return key.charAt(0).toUpperCase() + key.slice(1)
+}
+
+// Форматирование значения (добавляет единицы измерения для стандартных числовых полей)
+function formatNutritionValue(key: string, value: any): string {
+  if (typeof value === 'number') {
+    if (key === 'calories') {
+      return `${value} ккал`
+    }
+    if (['protein', 'fat', 'carbohydrate'].includes(key)) {
+      return `${value} г`
+    }
+  }
+  return String(value)
+}
 </script>

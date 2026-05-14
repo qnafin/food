@@ -35,13 +35,11 @@ const optionsStore = useOptionsStore()
 const channelStore = useChannelStore()
 const menuStore = useMenuStore()
 
-useHead({
-  title: optionsStore.getLocaleValue(channelStore.title),
-  meta: [
-    {
-      name: 'description',
-      content: optionsStore.getLocaleValue(channelStore.description),
-    },
-  ],
-})
+// Получаем данные для SEO
+const siteTitle = optionsStore.getLocaleValue(channelStore.title) // "Ремонт электротранспорта"
+const siteDescription = optionsStore.getLocaleValue(channelStore.description)
+const siteUrl = typeof window !== 'undefined' ? window.location.origin : ''
+
+// Применяем SEO (удаляем старый useHead)
+useHomeSeo(siteTitle, siteDescription, siteUrl)
 </script>

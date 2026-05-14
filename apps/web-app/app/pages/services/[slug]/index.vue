@@ -98,6 +98,21 @@
           </div>
         </div>
       </div>
+      <div v-if="service?.brands?.length" class="col-span-full">
+        <h2 class="mb-2 font-medium text-muted">
+          Поддерживаемые бренды
+        </h2>
+        <div class="flex flex-wrap gap-2">
+          <UBadge
+            v-for="brand in service.brands"
+            :key="brand"
+            color="neutral"
+            variant="subtle"
+          >
+            {{ brand }}
+          </UBadge>
+        </div>
+      </div>
     </div>
 
     <!-- Специальный блок для кастомных аккумуляторов (по желанию) -->
@@ -168,8 +183,6 @@ function formatPrice(price?: string): string {
   return price
 }
 
-useSeoMeta({
-  title: `${service.value.title} | Ремонт электротранспорта`,
-  description: service.value.description,
-})
+const siteName = 'Ремонт электротранспорта' // или возьмите из настроек канала
+useServiceSeo(service.value, siteName)
 </script>

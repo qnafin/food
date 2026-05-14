@@ -151,7 +151,7 @@ export const ru: Dictionary = {
       lb: 'Фунт',
     },
     'nutrition': {
-      'value-title': 'Пищевая ценность на 100 грамм',
+      'value-title': 'Характеристики',
       'calories': 'Калории',
       'kcal': 'Ккал',
       'protein': 'Белки',

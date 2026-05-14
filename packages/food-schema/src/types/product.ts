@@ -3,12 +3,8 @@ import { LocaleValueSchema, WeightUnitSchema } from './common'
 import { ImageSchema } from './image'
 import { VideoSchema } from './video'
 
-export const NutritionFactsSchema = z.object({
-  calories: z.number().nonnegative(),
-  carbohydrate: z.number().nonnegative(),
-  protein: z.number().nonnegative(),
-  fat: z.number().nonnegative(),
-})
+export const NutritionFactsSchema = z.record(z.string(), z.any())
+
 export type NutritionFacts = z.infer<typeof NutritionFactsSchema>
 
 export const ProductBadgeSchema = z.object({
