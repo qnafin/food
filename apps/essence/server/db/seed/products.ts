@@ -5,8 +5,8 @@ import { hotMeals } from '../../services/data/products/hotMeals'
 import { salads } from '../../services/data/products/salads'
 import { snacks } from '../../services/data/products/snacks'
 import { soups } from '../../services/data/products/soups'
-
 import { useLogger } from '../../utils/logger'
+
 import { db } from '../index'
 import { categories, products, productVariants } from '../schema'
 import 'dotenv/config'

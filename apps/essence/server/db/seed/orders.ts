@@ -23,6 +23,7 @@ async function seedOrders() {
       logger.error(`Product not found: ${productSlug}`)
       return
     }
+    const productTitle = product[0].title
     const productId = product[0].id
 
     // Получаем ID варианта по slug (если нужен)
@@ -32,7 +33,7 @@ async function seedOrders() {
     if (variant.length) {
       variantId = variant[0].id
     }
-
+    const variantTitle = variant[0]?.title || null
     // Получаем ID категории по slug
     const categorySlug = 'desserts'
     const category = await db.select().from(categories).where(eq(categories.slug, categorySlug)).limit(1)
@@ -71,6 +72,8 @@ async function seedOrders() {
       orderId: order.id,
       productId,
       productSlug,
+      productTitle,
+      variantTitle,
       categoryId,
       categorySlug,
       variantId: variantId ?? undefined, // если вариант не найден, передаём undefined (NULL в БД)

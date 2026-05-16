@@ -98,7 +98,7 @@
           </div>
         </div>
       </div>
-      <div v-if="service?.brands?.length" class="col-span-full">
+      <div v-if="service?.brands?.length" class="col-span-full mb-6">
         <h2 class="mb-2 font-medium text-muted">
           Поддерживаемые бренды
         </h2>

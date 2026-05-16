@@ -12,10 +12,10 @@
     "typecheck": "nuxt typecheck",
     "postinstall": "nuxt prepare",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx server/db/migrate.ts",
+    "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:push": "drizzle-kit push",
-    "db:seed": "tsx server/db/seed.ts"
+    "db:seed": "tsx server/db/seed/menu.ts && tsx server/db/seed/products.ts && tsx server/db/seed/recommended.ts && tsx server/db/seed/composition.ts && tsx server/db/seed/badges.ts && tsx server/db/seed/services.ts && tsx server/db/seed/orders.ts"
   },
   "dependencies": {
     "@date-fns/tz": "catalog:integrations",

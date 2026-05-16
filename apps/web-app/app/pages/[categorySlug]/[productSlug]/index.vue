@@ -92,15 +92,15 @@
         <h2 class="mb-2 font-medium text-muted">
           Характеристики
         </h2>
-        <div class="bg-elevated/50 rounded-lg overflow-hidden border border-gray-800">
+        <div class="bg-elevated/50 rounded-lg overflow-hidden ">
           <table class="w-full text-sm">
             <tbody>
               <tr
                 v-for="(value, key) in displayableNutritionFacts"
                 :key="key"
-                class="border-b border-gray-800 last:border-b-0"
+                class="last:border-b-0"
               >
-                <td class="py-3 px-4 font-medium text-white w-1/2">
+                <td class="py-3 px-4 font-medium text-white-600 w-1/2">
                   {{ formatNutritionKey(key) }}
                 </td>
                 <td class="py-3 px-4 text-muted">
