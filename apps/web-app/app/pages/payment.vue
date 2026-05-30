@@ -11,7 +11,7 @@
       </p>
 
       <!-- Блок для физических лиц -->
-      <div class="bg-elevated/30 border border-gray-800 rounded-xl p-6 mb-8">
+      <div class="bg-elevated/30  rounded-xl p-6 mb-8">
         <h2 class="text-xl font-semibold text-highlighted mb-4 flex items-center gap-2">
           <UIcon name="lucide:user" class="size-5" /> Физическим лицам
         </h2>
@@ -19,23 +19,23 @@
           <li class="flex items-start gap-2">
             <span class="text-orange-400">💳</span>
             <div>
-              <span class="font-medium text-white">Банковская карта (Мир, Visa, Mastercard):</span><br>
-              {{ appConfig.bankCardNumber }} <span class="text-sm">({{ appConfig.fullCompanyName }})</span>
+              <span class="font-medium">Банковская карта (Мир, Visa, Mastercard):</span><br>
+              <span class="text-sm text-secondary">{{ appConfig.bankCardNumber }} ({{ appConfig.fullCompanyName }})</span>
             </div>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-orange-400">📲</span>
             <div>
-              <span class="font-medium text-white">СБП (Система быстрых платежей):</span> по номеру телефона
+              <span class="font-medium">СБП (Система быстрых платежей):</span> по номеру телефона
               <a :href="`tel:${appConfig.phoneNumberRaw || appConfig.phoneNumber}`" class="text-orange-400 hover:underline">
-                {{ appConfig.phoneNumber }}
+                {{ appConfig.phoneNumber }} ({{ appConfig.bankSBPName }})
               </a>
             </div>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-orange-400">💵</span>
             <div>
-              <span class="font-medium text-white">Наличные при самовывозе</span> (только для самовывоза)
+              <span class="font-medium">Наличные при самовывозе</span> (только для самовывоза)
             </div>
           </li>
         </ul>
@@ -48,9 +48,9 @@
             rel="noopener noreferrer"
             class="text-orange-400 hover:underline"
           >
-            сообщите мне в чат
+            сообщите мне в чат.
           </a>
-          о том, что оплатили. Если есть возможность, пришлите фото квитанции. Спасибо!
+          Если есть возможность, пришлите фото квитанции. Спасибо!
         </div>
         <p class="text-xs text-muted mt-4">
           * Реквизиты действительны только для заказов, подтверждённых мастером.
@@ -58,18 +58,16 @@
       </div>
 
       <!-- Блок для юридических лиц -->
-      <div class="bg-elevated/30 border border-gray-800 rounded-xl p-6">
+      <div class="bg-elevated/30  rounded-xl p-6">
         <h2 class="text-xl font-semibold text-highlighted mb-4 flex items-center gap-2">
           <UIcon name="lucide:building" class="size-5" /> Юридическим лицам и ИП
         </h2>
         <p class="text-muted mb-4 text-sm">
           Для выставления счёта или заключения договора используйте следующие реквизиты:
         </p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 text-sm  rounded-lg p-4 border border-gray-800/50">
-          <div><span class="text-muted">Полное наименование:</span><br><span class="text-white">{{ appConfig.legalEntity.name }}</span></div>
-          <div><span class="text-muted">ИНН / КПП:</span><br>{{ appConfig.legalEntity.inn }} / {{ appConfig.legalEntity.kpp }}</div>
-          <div><span class="text-muted">ОГРН:</span><br>{{ appConfig.legalEntity.ogrn }}</div>
-          <div><span class="text-muted">Юридический адрес:</span><br>{{ appConfig.legalEntity.legalAddress }}</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 text-sm  rounded-lg p-4 border border-default">
+          <div><span class="text-muted">Полное наименование:</span><br><span>{{ appConfig.legalEntity.name }}</span></div>
+          <div><span class="text-muted">ИНН:</span><br>{{ appConfig.legalEntity.inn }}</div>
           <div><span class="text-muted">Банк:</span><br>{{ appConfig.legalEntity.bankName }}</div>
           <div><span class="text-muted">БИК:</span><br>{{ appConfig.legalEntity.bik }}</div>
           <div><span class="text-muted">Корр. счёт:</span><br>{{ appConfig.legalEntity.correspondentAccount }}</div>

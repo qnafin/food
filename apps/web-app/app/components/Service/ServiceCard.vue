@@ -3,7 +3,7 @@
     :to="`/services/${service.slug}`"
     class="block hover:scale-[1.02] transition-transform duration-200"
   >
-    <UCard class="h-full bg-elevated/30 border-gray-800">
+    <UCard class="h-full bg-elevated/30 border-default">
       <div class="text-lg font-semibold text-highlighted mb-2 flex items-center gap-2">
         <span>{{ getIconForService(service) }}</span>
         <span>{{ service.title }}</span>

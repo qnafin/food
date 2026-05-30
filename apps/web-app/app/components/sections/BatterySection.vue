@@ -1,5 +1,5 @@
 <template>
-  <section class="py-12 border-t border-gray-800">
+  <section class="py-12 border-t border-default">
     <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-start">
       <!-- Левая информационная часть -->
       <div>
@@ -30,7 +30,7 @@
           </li>
         </ul>
 
-        <div class="mb-8 p-4 rounded-xl bg-elevated/50 border border-gray-800">
+        <div class="mb-8 p-4 rounded-xl bg-elevated/50 border border-default">
           <div class="text-sm text-muted">
             Стоимость
           </div>
@@ -42,7 +42,7 @@
           </div>
         </div>
 
-        <div class="mb-8 p-4 rounded-xl bg-elevated/50 border border-gray-800">
+        <div class="mb-8 p-4 rounded-xl bg-elevated/50 border border-default">
           <div class="text-sm text-muted mb-2">
             Пример работы
           </div>
@@ -59,7 +59,7 @@
 
       <!-- Правая часть – форма оценки -->
       <div class="space-y-6">
-        <div class="rounded-2xl overflow-hidden border border-gray-800 bg-elevated/50 aspect-video flex items-center justify-center text-muted">
+        <div class="rounded-xl overflow-hidden border border-default bg-elevated/50 aspect-video flex items-center justify-center text-muted">
           <img
             :src="img"
             alt="Ремонт электросамокатов и аккумуляторов"

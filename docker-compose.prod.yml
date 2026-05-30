@@ -22,7 +22,7 @@ services:
       dockerfile: docker/essence/Dockerfile
     container_name: akb-essence
     environment:
-      POSTGRES_URL: postgresql://postgres:mysecretpassword@postgres:5432/akbdb
+      POSTGRES_URL: ${POSTGRES_URL}
       VK_ACCESS_TOKEN: ${VK_ACCESS_TOKEN}
       VK_USER_ID: ${VK_USER_ID}
       YOUR_NAME: ${YOUR_NAME}

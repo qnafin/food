@@ -1,5 +1,5 @@
 <template>
-  <UCard class="bg-elevated/30 border-gray-800">
+  <UCard class="bg-elevated/30 border-default">
     <template #header>
       <div class="font-semibold text-lg text-highlighted">
         {{ formTitle }}

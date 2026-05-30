@@ -1,5 +1,5 @@
 <template>
-  <section class=" py-12 border-t border-gray-800">
+  <section class=" py-12 border-t border-default">
     <div class="max-w-5xl mx-auto px-6 text-center">
       <h2 class="text-2xl md:text-3xl font-semibold text-highlighted mb-4">
         Нужен ремонт или оценка?
@@ -12,7 +12,7 @@
         <ButtonLead size="lg" lead-type="footer" />
       </div>
       <div class="grid sm:grid-cols-3 gap-6 text-sm text-muted mb-12">
-        <div class="bg-elevated/50 border border-gray-800 rounded-xl p-4 text-center">
+        <div class="bg-elevated/50 border border-default rounded-xl p-4 text-center">
           <div class="font-medium text-white-900 mb-1 flex items-center justify-center gap-2">
             <UIcon name="lucide:send" class="size-4" /> ВКонтакте
           </div>
@@ -26,7 +26,7 @@
             {{ appConfig.vkLinkText }}
           </UButton>
         </div>
-        <div class="bg-elevated/50 border border-gray-800 rounded-xl p-4 text-center">
+        <div class="bg-elevated/50 border border-default rounded-xl p-4 text-center">
           <div class="font-medium text-white-900 mb-1 flex items-center justify-center gap-2">
             <UIcon name="lucide:phone" class="size-4" /> Телефон
           </div>
@@ -40,7 +40,7 @@
           </UButton>
         </div>
 
-        <div class="bg-elevated/50 border border-gray-800 rounded-xl p-4 text-center">
+        <div class="bg-elevated/50 border border-default rounded-xl p-4 text-center">
           <div class="font-medium text-white-900 mb-1 flex items-center justify-center gap-2">
             <UIcon name="lucide:map-pin" class="size-4" /> Город
           </div>

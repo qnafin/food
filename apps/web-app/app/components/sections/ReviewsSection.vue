@@ -1,5 +1,5 @@
 <template>
-  <section id="reviews" class="py-12 border-t border-gray-800">
+  <section id="reviews" class="py-12 border-t border-default">
     <div class="max-w-7xl mx-auto px-6">
       <!-- заголовок и кнопки (как раньше) -->
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
@@ -11,7 +11,7 @@
             Более {{ appConfig.reviewsCount }} реальных отзывов
           </p>
         </div>
-        <div class="bg-elevated/50 border border-gray-800 rounded-xl px-5 py-3 text-sm text-muted">
+        <div class="bg-elevated/50 border border-default rounded-xl px-5 py-3 text-sm text-muted">
           <div class="flex flex-wrap items-center gap-2">
             <span>⭐ {{ appConfig.reviewsCount }}+ отзывов</span>
             <span class="text-gray-600">|</span>
