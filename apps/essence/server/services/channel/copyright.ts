@@ -6,7 +6,7 @@ export const copyright: Channel['copyright'] = [
   {
     locale: 'ru',
     value: `© 2024—${new Date().getFullYear()} ${process.env.YOUR_NAME || 'ООО Ваша компания'}. Все права защищены.
-ИНН: ${process.env.INN || '9876543210'} ОГРН: ${process.env.OGRN || '123456789012345'}.
+ИНН: ${process.env.INN || '9876543210'}
 ${process.env.LOCAL_ADDRESS || 'Ваш адрес'}
 
 Информация на сайте не является публичной офертой.

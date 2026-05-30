@@ -39,7 +39,7 @@
 
       <!-- правая колонка (без изменений) -->
       <div class="relative">
-        <div class="rounded-xl overflow-hidden bg-elevated/50 aspect-[3/4] flex items-center justify-center text-muted">
+        <div class="rounded-xl overflow-hidden bg-elevated/50 aspect-[3.5/4] flex items-center justify-center text-muted">
           <img
             :src="img"
             alt="Ремонт электросамокатов и аккумуляторов"
