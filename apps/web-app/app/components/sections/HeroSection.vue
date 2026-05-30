@@ -60,5 +60,5 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
 
-const img = 'https://sun9-56.userapi.com/s/v1/ig1/7bPxmJQvWWZtrHz3IHNG4mgLiRhF6tJ44KTXyI9r_P36DbAe8VSUJ4HpshkiU6ONUAZX3a2U.jpg?quality=96&as=32x43,48x64,72x96,108x144,160x213,240x320,360x479,480x639,540x719,640x852,720x959&from=bu&cs=720x0'
+const img = appConfig?.heroImg
 </script>
