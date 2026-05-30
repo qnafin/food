@@ -3,8 +3,9 @@ import { ChannelSchema } from './channel'
 import { MenuSchema } from './menu'
 import { OptionsSchema } from './options'
 import { AddressSuggestionSchema, DeliveryMethodSchema, OrderItemChangeSchema, OrderSchema } from './order'
+import { ReviewSchema } from './review'
+import { ServiceSchema } from './service'
 import { OpeningStatusSchema, TimePeriodSchema } from './time'
-
 /**
  * Gateway Types
  */
@@ -24,6 +25,10 @@ export const GatewayActionTypeSchema = z.enum([
   'getTimeSlots',
   'suggestAddresses',
   'checkDeliveryZone',
+
+  'createLead',
+  'getServices',
+  'getReviews',
 ])
 export type GatewayActionType = z.infer<typeof GatewayActionTypeSchema>
 
@@ -261,6 +266,60 @@ export const GatewayCheckDeliveryZoneResponseSchema = BaseResponseSchema.extend(
 })
 export type GatewayCheckDeliveryZoneResponse = z.infer<typeof GatewayCheckDeliveryZoneResponseSchema>
 
+export const GatewayGetServicesRequestSchema
+  = GatewayRequestSchema.extend({
+    type: z.literal('getServices'),
+  })
+
+export type GatewayGetServicesRequest
+  = z.infer<typeof GatewayGetServicesRequestSchema>
+
+export const GatewayGetServicesResponseSchema
+  = BaseResponseSchema.extend({
+    type: z.literal('getServices'),
+
+    result: ServiceSchema.array(),
+  })
+
+export type GatewayGetServicesResponse
+  = z.infer<typeof GatewayGetServicesResponseSchema>
+
+export const GatewayCreateLeadRequestSchema = GatewayRequestSchema.extend({
+  type: z.literal('createLead'),
+  body: z.object({
+    type: z.string(),
+    message: z.string(),
+    phone: z.string().optional(),
+    fileBase64: z.string().optional(),
+    filename: z.string().optional(),
+  }),
+})
+
+// новый ответ (просто подтверждение)
+export const GatewayCreateLeadResponseSchema = BaseResponseSchema.extend({
+  type: z.literal('createLead'),
+  result: z.object({ success: z.boolean() }),
+})
+export type GatewayCreateLeadRequest = z.infer<typeof GatewayCreateLeadRequestSchema>
+export type GatewayCreateLeadResponse = z.infer<typeof GatewayCreateLeadResponseSchema>
+// в GatewayActionTypeSchema добавить 'getReviews'
+
+export const GatewayGetReviewsRequestSchema = GatewayRequestSchema.extend({
+  type: z.literal('getReviews'),
+  body: z.object({
+    place: z.enum(['main', 'service']).optional(),
+    serviceId: z.string().optional(),
+  }).optional(),
+})
+
+export const GatewayGetReviewsResponseSchema = BaseResponseSchema.extend({
+  type: z.literal('getReviews'),
+  result: ReviewSchema.array(),
+})
+
+export type GatewayGetReviewsRequest = z.infer<typeof GatewayGetReviewsRequestSchema>
+export type GatewayGetReviewsResponse = z.infer<typeof GatewayGetReviewsResponseSchema>
+
 /**
  * Combined Gateway Response
  */
@@ -280,5 +339,8 @@ export const GatewayResponseSchema = z.discriminatedUnion('type', [
   GatewayGetTimeSlotsResponseSchema,
   GatewaySuggestAddressesResponseSchema,
   GatewayCheckDeliveryZoneResponseSchema,
+  GatewayGetServicesResponseSchema,
+  GatewayCreateLeadResponseSchema,
+  GatewayGetReviewsResponseSchema,
 ])
 export type GatewayResponse = z.infer<typeof GatewayResponseSchema>

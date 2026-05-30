@@ -15,6 +15,8 @@ RUN corepack enable pnpm && pnpm i --frozen-lockfile
 COPY packages/ packages/
 COPY apps/web-app/ apps/web-app/
 
+# Увеличиваем память для сборки
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN pnpm --filter @nextorders/web-app... run build
 
 # Production stage

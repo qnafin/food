@@ -2,15 +2,15 @@ import process from 'node:process'
 import { burgers } from '../../services/data/products/burgers'
 import { desserts } from '../../services/data/products/desserts'
 import { hotMeals } from '../../services/data/products/hotMeals'
-
 import { salads } from '../../services/data/products/salads'
+
 import { snacks } from '../../services/data/products/snacks'
 import { soups } from '../../services/data/products/soups'
 import { useLogger } from '../../utils/logger'
 import { slugify } from '../../utils/slugify'
 import { db } from '../index'
-
 import { ingredients, productComposition, productIngredients, products, productVariants } from '../schema'
+
 import 'dotenv/config'
 
 const logger = useLogger('seed-composition')

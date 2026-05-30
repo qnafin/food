@@ -16,7 +16,7 @@
       class="w-full"
     />
 
-    <UFormField v-if="selectedPaymentMethod?.type === 'cash'" :label="$dict('web-app.checkout.change-label')">
+    <UFormField v-if="selectedPaymentMethod?.type === 'cash' && appConfig.enableChangeOption" :label="$dict('web-app.checkout.change-label')">
       <UInputNumber
         v-model="state.changeFrom"
         size="xl"
@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 import type { Order, PaymentMethod } from '@nextorders/food-schema'
+import appConfig from '~/app.config'
 
 const optionsStore = useOptionsStore()
 const channelStore = useChannelStore()

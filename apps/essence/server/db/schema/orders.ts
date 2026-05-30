@@ -23,9 +23,11 @@ export const orderItems = pgTable('order_items', {
   orderId: integer('orderId').notNull().references(() => orders.id, { onDelete: 'cascade' }),
   productId: integer().notNull().references(() => products.id),
   productSlug: text().notNull(),
+  productTitle: text().notNull(),
   categoryId: integer().notNull().references(() => categories.id),
   categorySlug: text().notNull(),
   variantId: integer().references(() => productVariants.id), // опционально, если вариант не указан
+  variantTitle: text().notNull(),
   quantity: integer().notNull(),
   unitPrice: real().notNull(),
   totalPrice: real().notNull(),

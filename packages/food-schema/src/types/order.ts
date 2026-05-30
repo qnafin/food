@@ -15,9 +15,11 @@ export const OrderItemSchema = z.object({
   orderId: z.string(),
   productId: z.string(),
   productSlug: z.string(),
+  productTitle: z.string(),
   categoryId: z.string(),
   categorySlug: z.string(),
   variantId: z.string(),
+  variantTitle: z.string().optional(),
   quantity: z.number().positive(),
   unitPrice: z.number().nonnegative(),
   totalPrice: z.number().nonnegative(), // quantity × unitPrice

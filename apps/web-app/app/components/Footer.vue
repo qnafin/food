@@ -26,16 +26,15 @@
     <div class="mt-4 flex flex-row gap-1.5 items-center text-sm text-muted">
       {{ $dict('common.footer.copyright-part-one') }}
       <UIcon name="i-lucide-heart" class="size-4" />
-      {{ $dict('common.footer.copyright-part-two') }}
 
       <ULink
-        :to="appConfig.projectUrl"
+        :to="appConfig.authorTelegramLink"
         target="_blank"
         external
         class="font-medium flex flex-row gap-1 items-center"
       >
-        <UIcon name="simple-icons:github" class="size-4" />
-        {{ appConfig.projectTitle }}
+        <UIcon name="simple-icons:telegram" class="size-4" />
+        {{ appConfig.authorName }}
       </ULink>
     </div>
   </div>

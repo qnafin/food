@@ -28,17 +28,33 @@
     />
 
     <UNavigationMenu
-      v-if="orderStore.id"
       :items="deliveryMenuItems"
       orientation="vertical"
       class="motion-preset-slide-down"
     />
 
+    <!-- Новый блок: Услуги -->
+    <UNavigationMenu
+      v-if="servicesMenuItems.length"
+      :items="servicesMenuItems"
+      orientation="vertical"
+      class="motion-preset-slide-down"
+    />
+
+    <!-- Существующий блок каталога товаров -->
     <UNavigationMenu
       :items="catalogItems"
       orientation="vertical"
       class="motion-preset-slide-down"
     />
+
+    <!-- Отдельная ссылка на страницу оплаты (можно добавить в низ) -->
+    <div class="px-2.5 mt-2">
+      <UNavigationMenu
+        :items="paymentMenuItem"
+        orientation="vertical"
+      />
+    </div>
   </div>
 
   <div class="shrink-0 flex items-center gap-1.5 py-2 px-2">
@@ -48,7 +64,8 @@
 </template>
 
 <script setup lang="ts">
-import { ModalChannelSelector, ModalDeliveryInfo, ModalDeliverySchedule } from '#components'
+import { ModalChannelSelector, ModalDeliveryInfo } from '#components'
+import { useServiceStore } from '~/stores/service' // добавьте импорт
 
 const { dict } = useDictionary()
 const route = useRoute()
@@ -57,17 +74,21 @@ const optionsStore = useOptionsStore()
 const channelStore = useChannelStore()
 const orderStore = useOrderStore()
 const menuStore = useMenuStore()
+const serviceStore = useServiceStore() // получаем услуги
+
+// Загружаем услуги, если ещё не загружены
+await serviceStore.update()
 
 const overlay = useOverlay()
 const modalDeliveryInfo = overlay.create(ModalDeliveryInfo)
-const modalDeliverySchedule = overlay.create(ModalDeliverySchedule)
+// const modalDeliverySchedule = overlay.create(ModalDeliverySchedule)
 const modalChannelSelector = overlay.create(ModalChannelSelector)
 
 const title = computed(() => orderStore.deliveryMethod === 'deliveryByCourier' ? dict('web-app.cart.delivery') : dict('web-app.cart.pickup'))
-const todayUntil = computed<string>(() => {
-  const status = orderStore.deliveryMethod === 'deliveryByCourier' ? channelStore.deliveryOpeningStatus : channelStore.selfPickupOpeningStatus
-  return status?.todayEndAt ?? ''
-})
+// const todayUntil = computed<string>(() => {
+//   const status = orderStore.deliveryMethod === 'deliveryByCourier' ? channelStore.deliveryOpeningStatus : channelStore.selfPickupOpeningStatus
+//   return status?.todayEndAt ?? ''
+// })
 
 const asideMenuItems = computed(() => channelStore.links?.aside?.map((link) => ({
   label: optionsStore.getLocaleValue(link.label),
@@ -80,11 +101,6 @@ const deliveryMenuItems = computed(() => [
   {
     label: title.value,
     type: 'label' as const,
-  },
-  {
-    label: `${dict('web-app.cart.today-until')} ${todayUntil.value}`,
-    icon: 'lucide:clock',
-    onSelect: () => modalDeliverySchedule.open(),
   },
   {
     label: `${dict('web-app.cart.from')} ${channelStore.deliveryByCourier?.minAmountForDelivery} ${optionsStore.currencySign}`,
@@ -110,5 +126,37 @@ const catalogItems = computed(() => [
     active: route.path.startsWith(`/${c.slug}`),
     icon: c.icon ?? 'lucide:bookmark',
   })),
+])
+
+// Меню услуг (первые 3 + ссылка "Все")
+const servicesMenuItems = computed(() => {
+  const allServices = serviceStore.services || []
+  const topServices = allServices.slice(0, 3)
+  const items = [
+    {
+      label: 'Услуги',
+      type: 'label' as const,
+    },
+    ...topServices.map((service) => ({
+      label: service.title,
+      to: `/services/${service.slug}`,
+      icon: 'lucide:wrench',
+    })),
+    {
+      label: 'Все услуги',
+      icon: 'lucide:arrow-right',
+      to: '/services',
+    },
+  ]
+  return items
+})
+
+// Пункт меню для страницы оплаты
+const paymentMenuItem = computed(() => [
+  {
+    label: 'Оплата',
+    icon: 'lucide:credit-card',
+    to: '/payment',
+  },
 ])
 </script>

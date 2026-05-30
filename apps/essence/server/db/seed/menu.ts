@@ -5,7 +5,6 @@ import { categories, menus } from '../schema'
 import 'dotenv/config'
 
 const logger = useLogger('seed-menu')
-
 async function seedMenu() {
   logger.info('🌱 Seeding menu...')
   try {

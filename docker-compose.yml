@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: akb-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: akbdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  essence:
+    build:
+      context: .
+      dockerfile: docker/essence/Dockerfile
+    container_name: akb-essence
+    environment:
+      POSTGRES_URL: postgresql://postgres:mysecretpassword@postgres:5432/akbdb
+      VK_ACCESS_TOKEN: ${VK_ACCESS_TOKEN}
+      VK_USER_ID: ${VK_USER_ID}
+      YOUR_NAME: ${YOUR_NAME}
+      PHONE_NUMBER: ${PHONE_NUMBER}
+      EMAIL: ${EMAIL}
+      INN: ${INN}
+      OGRN: ${OGRN}
+      LOCAL_CITY: ${LOCAL_CITY}
+      LOCAL_ADDRESS: ${LOCAL_ADDRESS}
+    ports:
+      - "3503:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  web-app:
+    build:
+      context: .
+      dockerfile: docker/web-app/Dockerfile
+    environment:
+      NUXT_PUBLIC_CHANNEL_ID: "moscow"
+      NUXT_SESSION_PASSWORD: "fbf35d0285c746638ae6c245862d4cd1"
+      NUXT_API_URL: "http://essence:3000/api/storefront/gateway"
+    ports:
+      - "3502:3000"
+    depends_on:
+      - essence
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

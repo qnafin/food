@@ -1,5 +1,11 @@
 <template>
   <MaintenanceMessage v-if="channelStore.isOnMaintenance" />
+  <HeroSection />
+  <div class="md:mt-2" />
+  <ServicesSection />
+  <BatterySection class="md:mt-2" />
+  <ReviewsSection class="md:mt-2" place="main" />
+  <FinalCTASection class="md:mt-2" />
 
   <div class="md:mt-2" />
 
@@ -19,17 +25,21 @@
 </template>
 
 <script setup lang="ts">
+import BatterySection from '~/components/sections/BatterySection.vue'
+import FinalCTASection from '~/components/sections/FinalCTASection.vue'
+import HeroSection from '~/components/sections/HeroSection.vue'
+import ReviewsSection from '~/components/sections/ReviewsSection.vue'
+import ServicesSection from '~/components/sections/ServicesSection.vue'
+
 const optionsStore = useOptionsStore()
 const channelStore = useChannelStore()
 const menuStore = useMenuStore()
 
-useHead({
-  title: optionsStore.getLocaleValue(channelStore.title),
-  meta: [
-    {
-      name: 'description',
-      content: optionsStore.getLocaleValue(channelStore.description),
-    },
-  ],
-})
+// Получаем данные для SEO
+const siteTitle = optionsStore.getLocaleValue(channelStore.title) // "Ремонт электротранспорта"
+const siteDescription = optionsStore.getLocaleValue(channelStore.description)
+const siteUrl = typeof window !== 'undefined' ? window.location.origin : ''
+
+// Применяем SEO (удаляем старый useHead)
+useHomeSeo(siteTitle, siteDescription, siteUrl)
 </script>

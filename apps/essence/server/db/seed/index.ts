@@ -1,2 +1,7 @@
 import './menu'
 import './products'
+import './recommended'
+import './composition'
+import './badges'
+import './services'
+import './orders'
