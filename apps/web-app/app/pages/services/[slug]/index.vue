@@ -3,21 +3,17 @@
 
   <div>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-0 gap-y-4 sm:gap-4">
-      <!-- Изображение (левая колонка) -->
+      <!-- Галерея изображений -->
       <div class="col-span-1">
-        <div class="relative">
-          <img
-            :src="service?.images[0]?.url || '/images/placeholder-service.jpg'"
-            :alt="service?.title"
-            class="w-full rounded-lg object-cover aspect-square"
-          >
-          <!-- Бейджи как в товаре -->
-          <div v-if="service?.isPopular" class="absolute left-2.5 bottom-3.5">
-            <UBadge color="orange" size="sm">
-              Популярная услуга
-            </UBadge>
-          </div>
-        </div>
+        <ServiceMediaGallery :service="service">
+          <template #badges>
+            <div v-if="service?.isPopular" class="absolute left-2.5 bottom-3.5">
+              <UBadge color="orange" size="sm">
+                Популярная услуга
+              </UBadge>
+            </div>
+          </template>
+        </ServiceMediaGallery>
       </div>
 
       <!-- Контент (правая колонка) -->
