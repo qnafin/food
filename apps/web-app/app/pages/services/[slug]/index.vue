@@ -5,15 +5,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-0 gap-y-4 sm:gap-4">
       <!-- Галерея изображений -->
       <div class="col-span-1">
-        <ServiceMediaGallery :service="service">
-          <template #badges>
-            <div v-if="service?.isPopular" class="absolute left-2.5 bottom-3.5">
-              <UBadge color="orange" size="sm">
-                Популярная услуга
-              </UBadge>
-            </div>
-          </template>
-        </ServiceMediaGallery>
+        <ServiceMediaGallery :service="service" />
       </div>
 
       <!-- Контент (правая колонка) -->
