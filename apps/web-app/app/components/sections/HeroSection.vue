@@ -48,9 +48,9 @@
           >
         </div>
         <!-- остальной блок без изменений -->
-        <div class="absolute -bottom-4 -left-4 bg-gray-100 rounded-xl px-4 py-2 text-sm text-muted flex items-center gap-2">
+        <div class="absolute -bottom-4 -left-4 bg-orange-50 rounded-xl px-4 py-2 text-sm text-muted flex items-center gap-2">
           <UIcon name="lucide:zap" class="size-4 text-orange-400" />
-          <span>Работаю лично / ⭐ {{ appConfig.reviewsCount }}+ отзывов на Авито</span>
+          <span class="text-secondary">Работаю лично / ⭐ {{ appConfig.reviewsCount }}+ отзывов на Авито</span>
         </div>
       </div>
     </div>

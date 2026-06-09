@@ -38,7 +38,6 @@ import appConfig from '~/app.config'
 const optionsStore = useOptionsStore()
 const channelStore = useChannelStore()
 const orderStore = useOrderStore()
-
 const paymentMethods = computed(() => orderStore.deliveryMethod === 'deliveryByCourier' ? channelStore.deliveryByCourier?.paymentMethods : channelStore.selfPickup?.paymentMethods)
 const items = computed(() => paymentMethods.value?.map((p) => ({ label: optionsStore.getLocaleValue(p.title), value: p.id })))
 
@@ -46,6 +45,18 @@ const state = ref<Pick<Order, 'paymentMethodId' | 'changeFrom'>>({
   paymentMethodId: orderStore.paymentMethodId ?? '',
   changeFrom: orderStore.changeFrom ?? undefined,
 })
+
+// 🆕 Предустановка метода оплаты, если в сторе нет
+if (!state.value.paymentMethodId && paymentMethods.value?.length) {
+  // Выбираем первый доступный метод
+  const defaultMethod = paymentMethods.value[0]
+  if (defaultMethod) {
+    state.value.paymentMethodId = defaultMethod.id
+    // Сразу сохраняем в стор, чтобы не ждать watch
+    orderStore.paymentMethodId = defaultMethod.id
+    orderStore.isSaved = false
+  }
+}
 
 const selectedPaymentMethod = ref<PaymentMethod | undefined>()
 
