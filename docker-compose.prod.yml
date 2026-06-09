@@ -22,7 +22,7 @@ services:
       dockerfile: docker/essence/Dockerfile
     container_name: akb-essence
     environment:
-      POSTGRES_URL: ${POSTGRES_URL}
+      POSTGRES_URL: postgresql://postgres:mysecretpassword@postgres:5432/akbdb
       VK_ACCESS_TOKEN: ${VK_ACCESS_TOKEN}
       VK_USER_ID: ${VK_USER_ID}
       YOUR_NAME: ${YOUR_NAME}
@@ -38,7 +38,6 @@ services:
       postgres:
         condition: service_healthy
     restart: always
-
   web-app:
     build:
       context: .
@@ -67,7 +66,6 @@ services:
       - web-app
       - essence
     restart: always
-
   certbot:
     image: certbot/certbot
     container_name: akb-certbot
@@ -75,7 +73,6 @@ services:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-    # Первоначальное получение сертификата выполним вручную, потом он будет обновляться автоматически.
-
+    # Первоначальное получение сертификата выполним вручную, потом он будет обновляться автоматически. 
 volumes:
   postgres_data:
